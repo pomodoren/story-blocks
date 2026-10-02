@@ -1,0 +1,14 @@
+{#- A video: a file in a <video>, or a YouTube / Vimeo iframe (config.embed_url, set at build). -#}
+{% from "stories/blocks/_macros.html" import block_head %}
+{% set cfg = block.config %}
+<section class="sb sb--full-wide sb--video" data-block="video">
+  {{ block_head(cfg, icons, cfg.text) }}
+  {% if cfg.embed_url %}
+  <div class="vd-frame"><iframe src="{{ cfg.embed_url }}" title="{{ cfg.title or 'Video' }}" loading="lazy" allowfullscreen
+          allow="accelerometer; encrypted-media; picture-in-picture; fullscreen"></iframe></div>
+  {% else %}
+  <video class="vd-frame vd-file" src="{{ cfg.src }}"{% if cfg.poster %} poster="{{ cfg.poster }}"{% endif %} preload="metadata" playsinline
+         {% if cfg.autoplay %}autoplay muted loop{% else %}controls{% endif %}></video>
+  {% endif %}
+  {% if cfg.caption %}<p class="tb-caption">{{ cfg.caption }}</p>{% endif %}
+</section>

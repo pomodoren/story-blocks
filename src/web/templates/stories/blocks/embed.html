@@ -1,0 +1,10 @@
+{#- A live page in a frame. `src` is checked at build time (http(s) or a site path). -#}
+{% from "stories/blocks/_macros.html" import block_head %}
+{% set cfg = block.config %}
+<section class="sb sb--full-wide sb--embed" data-block="embed">
+  {{ block_head(cfg, icons) }}
+  <iframe class="em-frame" src="{{ cfg.src }}" title="{{ cfg.title or 'Embedded page' }}" loading="lazy"
+          style="height: {{ cfg.height | int }}vh"
+          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+  {% if cfg.caption %}<p class="tb-caption">{{ cfg.caption }}</p>{% endif %}
+</section>

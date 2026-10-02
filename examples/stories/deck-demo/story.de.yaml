@@ -1,0 +1,157 @@
+meta:
+  id: deck-demo.de
+  title: Eine Geschichte, die auch ein Vortrag ist
+  theme: midnight
+  lang: de
+  collection: Reference
+  accent: '#2a7de1'
+blocks:
+- type: cover
+  config:
+    image: /story-assets/stories/deck-demo/assets/Narta-Zvernec.webp
+    image_credit: Photo reused from the slider story · Who Owns the Albanian Coast
+    text: Drücke **Präsentieren**, und diese Seite wird zur Foliensammlung. Jeder Block ist eine Folie,
+      jeder Abschnitt eine Spalte. **Alle Zahlen sind fiktiv.** Probiere `→`, `↓`, `O`, `F`, `B`, `?`.
+    title: Eine Geschichte, die auch ein Vortrag ist
+    eyebrow: Demo · Folienmodus
+- type: heading
+  config:
+    text: Abschnitt 1 · Navigieren
+    level: 1
+    eyebrow: Abschnitte
+- type: text
+  config:
+    body: Ein `cover` oder eine Überschrift der Ebene 1/2 beginnt einen **Abschnitt**. Mit `→` springst
+      du zum nächsten.
+- type: text
+  config:
+    body: '`←` `→` wechseln zwischen Abschnitten. `↑` `↓` und die Leertaste gehen jede Folie der Reihe
+      nach durch. `Pos1` und `Ende` springen an die Enden.'
+    title: Zwei Arten der Bewegung
+    eyebrow: Text
+- type: callout
+  config:
+    tone: note
+    title: Direktlinks
+    text: Die Adressleiste führt beim Präsentieren `#/N` mit, so lässt sich jede Folie verlinken. `?present`
+      startet die Präsentation sofort.
+- type: quote
+  config:
+    text: Eine Präsentation ist nur eine Geschichte, die man unterbrechen darf.
+    cite: Regel für Vortragende
+    source: Fiktiv
+- type: heading
+  config:
+    text: Abschnitt 2 · Zeigen
+    level: 1
+    eyebrow: Zahlen
+- type: kpi
+  config:
+    figures:
+    - value: '17'
+      label: Blocktypen
+      text: Zählt beim Einblenden hoch.
+    - value: '5'
+      unit: Tasten
+      label: Für einen Vortrag
+      text: Pfeile, O, F, B, ?
+    - value: '100'
+      unit: '%'
+      label: Statisch veröffentlichbar
+      text: Außer Live-Einbettungen.
+- type: chart
+  config:
+    kind: hbar
+    labels:
+    - Text
+    - Diagramm
+    - Tabelle
+    - Karte
+    - Code
+    - Einbettung
+    series:
+    - name: Folien in diesem Vortrag
+      data:
+      - 4
+      - 1
+      - 1
+      - 1
+      - 2
+      - 1
+    unit: Folien
+    source: Fiktive Daten.
+    text: Diagramme, Tabellen und Karten werden direkt im Text verfasst und funktionieren daher ohne Server.
+- type: table
+  config:
+    columns:
+    - Taste
+    - label: Wirkung
+      num: false
+    rows:
+    - - O
+      - Übersicht aller Folien
+    - - F
+      - Vollbild
+    - - B
+      - Bildschirm abdunkeln
+    - - '?'
+      - Tastenkürzel anzeigen
+    - - Esc
+      - Schließen, dann beenden
+    caption: Suche und Sortierung funktionieren auch beim Präsentieren.
+- type: map
+  config:
+    title: Auch eine Karte ist eine Folie
+    markers:
+    - title: Narta lagoon
+      text: Klicke auf einen Marker für seine Karte.
+      center:
+      - 19.4237892
+      - 40.5316622
+    legend:
+    - label: Beispielmarker
+      color: '#e01e26'
+    text: Auch Karten sind Folien; ziehe und zoome sie während des Vortrags.
+- type: heading
+  config:
+    text: Abschnitt 3 · Erzählen
+    level: 1
+    eyebrow: Code und Live-Seiten
+- type: code
+  config:
+    title: Eine Folie ist ein Block
+    language: yaml
+    code: |
+      type: callout
+      tone: note
+      title: Deep links
+      text: 'Jeder Block kann eine Folie sein.'
+    caption: Code wird wörtlich angezeigt, nie interpretiert.
+- type: embed
+  config:
+    title: Eine Live-Seite in einer Folie
+    src: /story/format-showcase
+    height: 65
+    caption: Eine Einbettung rahmt jede http(s)-Seite oder jeden Seitenpfad. Sie braucht das Netz und
+      fehlt daher im statischen Export.
+- type: timeline
+  config:
+    intro: So würde der Vortrag ablaufen.
+    events:
+    - title: Eröffnen
+      date: 0:00
+      tag: Einstieg
+      text: Titelfolie, dann `→` drücken.
+    - title: Zeigen
+      date: 0:05
+      tag: Demo
+      text: Zahlen, Diagramm, Tabelle, Karte.
+    - title: Erzählen
+      date: 0:15
+      tag: Abschluss
+      text: Code, eine Live-Seite, Fragen.
+- type: credits
+  config:
+    items:
+    - label: Format
+      html: Fiktive Demo des Folienmodus; keine echten Daten.

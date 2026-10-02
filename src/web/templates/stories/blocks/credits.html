@@ -1,0 +1,22 @@
+<section class="sb sb--full sb--credits" data-block="credits">
+  <div class="sb__body">
+    <p class="sb__eyebrow">Credits &amp; methodology</p>
+    <h2 class="sb__title">{{ block.config.title }}</h2>
+    {% for item in block.config['items'] %}
+    <p class="cr-item"><strong>{{ item.label | md_inline }}</strong><span>{{ item.html | md_inline }}</span></p>
+    {% endfor %}
+    {% if block.config['logos'] %}
+    <p class="cr-logos">
+      {% for logo in block.config['logos'] %}
+      {% if logo.href %}<a href="{{ logo.href }}" target="_blank" rel="noopener">{% endif %}<img src="{{ logo.src }}" alt="{{ logo.alt }}" loading="lazy" />{% if logo.href %}</a>{% endif %}
+      {% endfor %}
+    </p>
+    {% endif %}
+    {% if block.config['links'] %}
+    <p class="sb__eyebrow" style="margin-top:16px">Keep exploring</p>
+    <p class="sb__links">
+      {% for link in block.config['links'] %}<a href="{{ link.href }}">{{ link.text }}</a>{% if not loop.last %} &nbsp;·&nbsp; {% endif %}{% endfor %}
+    </p>
+    {% endif %}
+  </div>
+</section>

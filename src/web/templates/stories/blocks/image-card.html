@@ -1,0 +1,9 @@
+{% from "stories/blocks/_macros.html" import block_shell %}
+{% call block_shell("image-card", block.config, icons, "split",
+                    prose=block.config.explanation,
+                    extra=("sb--media-left" if block.config.align == "media-left" else "")) %}
+  <figure class="sb__figure">
+    <img src="{{ block.config.src }}" alt="{{ '' if block.config.decorative else (block.config.alt or block.config.caption or block.config.title or '') }}" />
+    {% if block.config.caption %}<figcaption>{{ block.config.caption }}</figcaption>{% endif %}
+  </figure>
+{% endcall %}

@@ -1,0 +1,50 @@
+{#- A line chart scrubbed by scroll. points: [{label, value, note}]; a point with a note gets a
+    stem and a legend entry. The SVG is rendered here (so it prints and reads without JS);
+    static/story/blocks/scroll-chart.js grows the red fill and moves the marker as the figure
+    travels up the viewport. -#}
+{% from "stories/blocks/_macros.html" import block_head %}
+{% set cfg = block.config %}
+{% set pts = cfg.points %}
+{% set W = 1000 %}{% set H = 300 %}{% set pl = 34 %}{% set pr = 20 %}{% set pt = 28 %}{% set pb = 64 %}
+{% set vmax = (pts | map(attribute='value') | map('float') | max) or 1 %}
+{% set n = pts | length %}
+{% set ns = namespace(line=[], marks=[]) %}
+{% for p in pts %}
+  {% set x = pl + (loop.index0 * (W - pl - pr) / ((n - 1) or 1)) %}
+  {% set y = pt + (1 - (p.value | float) / vmax) * (H - pt - pb) %}
+  {% set ns.line = ns.line + [(x | round(1) | string) ~ ',' ~ (y | round(1) | string)] %}
+  {% set ns.marks = ns.marks + [[x | round(1), y | round(1)]] %}
+{% endfor %}
+{% set y0 = pt + (H - pt - pb) %}
+<section class="sb sb--full-wide sb--scroll-chart" data-block="scroll-chart">
+  {{ block_head(cfg, icons, cfg.intro) }}
+  <figure class="sx-chart" data-w="{{ W }}" data-pts="{{ ns.marks | tojson | forceescape }}">
+    <svg viewBox="0 0 {{ W }} {{ H }}" class="sx-svg" role="img" aria-label="{{ cfg.title or 'Line chart' }}">
+      {% for f in [0, 0.25, 0.5, 0.75, 1] %}
+      {% set yy = pt + f * (H - pt - pb) %}
+      <line x1="{{ pl }}" x2="{{ W - pr }}" y1="{{ yy | round(1) }}" y2="{{ yy | round(1) }}" class="sx-grid"/>
+      <text x="{{ pl - 6 }}" y="{{ (yy + 3) | round(1) }}" class="sx-ytick">{{ (vmax * (1 - f)) | round | int }}</text>
+      {% endfor %}
+      <polyline points="{{ ns.line | join(' ') }}" class="sx-base"/>
+      <g class="sx-fill-clip">
+        <polygon points="{{ pl }},{{ y0 | round(1) }} {{ ns.line | join(' ') }} {{ ns.marks[-1][0] }},{{ y0 | round(1) }}" class="sx-area"/>
+        <polyline points="{{ ns.line | join(' ') }}" class="sx-line"/>
+      </g>
+      {% for p in pts %}
+      {% set m = ns.marks[loop.index0] %}
+      <g class="sx-pt{% if p.note %} is-note{% endif %}">
+        {% if p.note %}<line x1="{{ m[0] }}" y1="{{ m[1] }}" x2="{{ m[0] }}" y2="{{ H - pb }}" class="sx-stem"/>{% endif %}
+        <circle cx="{{ m[0] }}" cy="{{ m[1] }}" r="{{ 5 if p.note else 3.4 }}"/>
+        <text x="{{ m[0] }}" y="{{ (m[1] - 11) | round(1) }}" class="sx-val">{{ p.value }}</text>
+        <text x="{{ m[0] }}" y="{{ H - pb + 18 }}" class="sx-label">{{ p.label }}</text>
+      </g>
+      {% endfor %}
+      <circle class="sx-mark" cx="{{ ns.marks[0][0] }}" cy="{{ ns.marks[0][1] }}" r="8"/>
+    </svg>
+    {% if pts | selectattr('note') | list %}
+    <div class="sx-legend">{% for p in pts if p.note %}<span><b>{{ p.label }}</b> {{ p.note }}</span>{% endfor %}</div>
+    {% endif %}
+    {% if cfg.caption or cfg.source %}<figcaption class="sx-caption">{{ cfg.caption }}{% if cfg.source %} <em>{{ cfg.source }}</em>{% endif %}</figcaption>{% endif %}
+  </figure>
+  <script type="application/json" data-block-config>{{ cfg | tojson }}</script>
+</section>

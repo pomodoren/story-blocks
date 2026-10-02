@@ -1,0 +1,10 @@
+{% set cfg = block.config %}
+<section class="sb sb--full sb--quote{% if cfg.image %} has-image{% endif %}" data-block="quote">
+  {% if cfg.image %}<img class="qt-face" src="{{ cfg.image }}" alt="{{ '' if cfg.decorative else (cfg.alt or cfg.cite or '') }}" loading="lazy" />{% endif %}
+  <blockquote class="qt">
+    <div class="qt-text">{{ cfg.text | markdown }}</div>
+    {% if cfg.cite or cfg.source %}
+    <footer>{% if cfg.cite %}<strong>{{ cfg.cite }}</strong>{% endif %}{% if cfg.source %}<span>{{ cfg.source }}</span>{% endif %}</footer>
+    {% endif %}
+  </blockquote>
+</section>

@@ -1,0 +1,235 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stories · Storyblocks</title>
+    <link rel="stylesheet" href="assets/story/base.css" />
+    
+    <script>
+      /* apply the saved colour scheme before first paint, so there is no light flash */
+      try {
+        var s = JSON.parse(localStorage.getItem("storyblocks.gallery") || "{}");
+        if (s.scheme === "light" || s.scheme === "dark") document.documentElement.dataset.scheme = s.scheme;
+      } catch (e) { /* storage blocked: follow the system scheme */ }
+    </script>
+    <link rel="stylesheet" href="assets/story/gallery.css" />
+
+  <link rel="icon" href="data:," />
+</head>
+  <body class="page gallery-page">
+    
+    <main>
+      
+      
+      <nav class="gallery-nav" aria-label="Primary">
+        <a class="gallery-nav-brand" href="./">
+          <span class="gallery-nav-mark" aria-hidden="true"></span>Stories
+        </a>
+        <span class="gallery-nav-links">
+          <a href="#stories">Library</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#reading-the-numbers">Reading the numbers</a>
+          
+        </span>
+        <span class="gallery-nav-count">2 stories</span>
+        <button type="button" class="gallery-icon-btn" data-open-settings aria-haspopup="dialog">
+          <span aria-hidden="true">&#9881;</span> Settings
+        </button>
+      </nav>
+      <header class="gallery-hero">
+        <div>
+          <div class="eyebrow">Published stories</div>
+          <h1>Story library</h1>
+          <p>
+            
+            Sourced, scroll-driven walkthroughs. Each story is a self-contained page &mdash;
+            what it shows was fixed when it was published, so it opens anywhere without a server.
+            
+          </p>
+        </div>
+      </header>
+
+      
+      
+      
+      <section class="gallery-summary" aria-label="Totals">
+        <div><strong>2</strong><span>stories</span></div>
+        <div><strong>48</strong><span>blocks</span></div>
+        <div><strong>5</strong><span>sections</span></div>
+        <div><strong>2</strong><span>images</span></div>
+        <div><strong>1</strong><span>collections</span></div>
+      </section>
+
+      <div class="gallery-toolbar" id="stories" role="search">
+        <label class="gallery-search">
+          <span class="sr-only">Search stories</span>
+          <input type="search" id="gallery-search" placeholder="Search stories  (press / )" autocomplete="off" />
+        </label>
+        
+        <div class="gallery-chips" role="group" aria-label="Filter by collection">
+          <button type="button" class="chip" data-collection="" aria-pressed="true">All</button>
+          <button type="button" class="chip" data-collection="Reference" aria-pressed="false">Reference</button>
+          
+        </div>
+        
+        <label class="gallery-sort">
+          <span>Sort</span>
+          <select id="gallery-sort">
+            <option value="authored">Authored order</option>
+            <option value="title">Title A&ndash;Z</option>
+            <option value="blocks">Most blocks</option>
+          </select>
+        </label>
+        <div class="gallery-view" role="group" aria-label="Layout">
+          <button type="button" data-view="grid" aria-pressed="true" title="Grid">Grid</button>
+          <button type="button" data-view="list" aria-pressed="false" title="List">List</button>
+        </div>
+      </div>
+      <p class="gallery-result" id="gallery-result" aria-live="polite"></p>
+
+      <div class="story-grid" id="story-grid">
+        
+        <a class="story-tile story-tile--midnight" href="deck-demo/index.html"
+           data-collection="Reference"
+           data-title="a story that is also a talk" data-blocks="16" data-order="0"
+           data-search="a story that is also a talk demo · slide-deck mode press present and this page becomes a slide deck. every block is a slide; each section is a column. all figures are illustrative. try →, ↓, o, f, b, ?. reference midnight quote kpi chart">
+          <div class="story-tile-thumb">
+            <img src="assets/stories/deck-demo/assets/Narta-Zvernec.webp" alt="" loading="lazy" />
+            <span class="story-tile-badge">Reference</span>
+          </div>
+          <div class="story-tile-body">
+            <p class="eyebrow">Demo · slide-deck mode</p>
+            <h2>A story that is also a talk</h2>
+            <p class="story-tile-blurb">Press Present and this page becomes a slide deck. Every block is a slide; each section is a column. All figures are illustrative. Try →, ↓, O, F, B, ?.</p>
+            
+            <ul class="story-tile-features">
+              <li>quote</li><li>kpi</li><li>chart</li>
+            </ul>
+            
+          </div>
+          <dl class="story-tile-stats">
+            <div title="Blocks: the building units of a story (text, maps, charts, media)"><dt>Blocks</dt><dd>16</dd></div>
+            <div title="Block types: how many different kinds of block it uses"><dt>Block types</dt><dd>13</dd></div>
+            <div title="Sections: parts opened by a cover or a top-level heading"><dt>Sections</dt><dd>4</dd></div>
+            <div title="Images: blocks that carry a picture"><dt>Images</dt><dd>1</dd></div>
+            <div title="Data blocks: interactive blocks beyond plain prose and media"><dt>Data blocks</dt><dd>8</dd></div>
+            <div title="Languages: the story plus its built translations"><dt>Languages</dt><dd>2</dd></div>
+          </dl>
+          <div class="story-tile-meta">
+            <span class="tag">midnight</span>
+            
+            
+          </div>
+        </a>
+        
+        <a class="story-tile story-tile--midnight" href="format-showcase/index.html"
+           data-collection="Reference"
+           data-title="every story format, on one page" data-blocks="32" data-order="1"
+           data-search="every story format, on one page reference · block catalog a good story switches format as the argument changes: a sentence, a photo, a number, a table, a map. this page shows each one. all figures here are illustrative — it demonstrates the formats, not a dataset. reference midnight quote kpi chart">
+          <div class="story-tile-thumb">
+            <img src="assets/stories/format-showcase/assets/Narta-Zvernec.webp" alt="" loading="lazy" />
+            <span class="story-tile-badge">Reference</span>
+          </div>
+          <div class="story-tile-body">
+            <p class="eyebrow">Reference · block catalog</p>
+            <h2>Every story format, on one page</h2>
+            <p class="story-tile-blurb">A good story switches format as the argument changes: a sentence, a photo, a number, a table, a map. This page shows each one. All figures here are illustrative — it demonstrates the formats, not a dataset.</p>
+            
+            <ul class="story-tile-features">
+              <li>quote</li><li>kpi</li><li>chart</li>
+            </ul>
+            
+          </div>
+          <dl class="story-tile-stats">
+            <div title="Blocks: the building units of a story (text, maps, charts, media)"><dt>Blocks</dt><dd>32</dd></div>
+            <div title="Block types: how many different kinds of block it uses"><dt>Block types</dt><dd>26</dd></div>
+            <div title="Sections: parts opened by a cover or a top-level heading"><dt>Sections</dt><dd>1</dd></div>
+            <div title="Images: blocks that carry a picture"><dt>Images</dt><dd>1</dd></div>
+            <div title="Data blocks: interactive blocks beyond plain prose and media"><dt>Data blocks</dt><dd>25</dd></div>
+            <div title="Languages: the story plus its built translations"><dt>Languages</dt><dd>1</dd></div>
+          </dl>
+          <div class="story-tile-meta">
+            <span class="tag">midnight</span>
+            
+            
+          </div>
+        </a>
+        
+      </div>
+      <p class="empty" id="gallery-empty" hidden>No stories match. Clear the search or pick another collection.</p>
+
+      <section class="gallery-explain" id="how-it-works">
+        <h2>How a story is made</h2>
+        <p>A story is a folder of plain files. The page you read is generated from them, so it stays reviewable and reproducible.</p>
+        <ol class="gallery-steps">
+          <li><strong>Write the spine</strong><span>Author <code>story.md</code>: Markdown prose with <code>block</code> fences for maps, charts, galleries and more.</span></li>
+          <li><strong>Build</strong><span><code>storyblocks build --content /path/to/stories</code> validates the spine and writes the matching <code>story.yaml</code>.</span></li>
+          <li><strong>Preview</strong><span>Run the local app to read it here.</span></li>
+          <li><strong>Export</strong><span><code>storyblocks export --content /path/to/stories</code> produces a static site with relative links that works from any file host.</span></li>
+        </ol>
+      </section>
+
+      <section class="gallery-explain" id="reading-the-numbers">
+        <h2>Reading the numbers</h2>
+        <p>Every card summarises its story from the built artifact; hover a figure for the same hint.</p>
+        <dl class="gallery-glossary">
+          <div><dt>Blocks</dt><dd>The building units of a story: text, maps, charts, media.</dd></div>
+          <div><dt>Block types</dt><dd>How many different kinds of block the story uses; a measure of variety.</dd></div>
+          <div><dt>Sections</dt><dd>Parts opened by a cover or a top-level heading; each is one stop in the section navigation.</dd></div>
+          <div><dt>Images</dt><dd>Blocks that carry a picture. Every meaningful image has alt text.</dd></div>
+          <div><dt>Data blocks</dt><dd>Interactive blocks beyond prose and media, such as maps, charts and tables.</dd></div>
+          <div><dt>Languages</dt><dd>The story plus any built translations, each served as its own page.</dd></div>
+        </dl>
+      </section>
+
+      <footer class="gallery-footer">
+        <span>Storyblocks &middot; static export</span>
+        <a href="#top" data-top>Back to top</a>
+      </footer>
+      
+
+      <dialog class="gallery-settings" id="gallery-settings" aria-labelledby="settings-title">
+        <form method="dialog">
+          <header>
+            <h2 id="settings-title">Display settings</h2>
+            <button class="gallery-icon-btn" value="close" aria-label="Close settings">&times;</button>
+          </header>
+          <p class="settings-note">Saved in this browser only.</p>
+          <fieldset>
+            <legend>Colour scheme</legend>
+            <label><input type="radio" name="scheme" value="auto" /> System</label>
+            <label><input type="radio" name="scheme" value="light" /> Light</label>
+            <label><input type="radio" name="scheme" value="dark" /> Dark</label>
+          </fieldset>
+          <fieldset>
+            <legend>Default layout</legend>
+            <label><input type="radio" name="view" value="grid" /> Grid</label>
+            <label><input type="radio" name="view" value="list" /> List</label>
+          </fieldset>
+          <fieldset>
+            <legend>Card density</legend>
+            <label><input type="radio" name="density" value="comfortable" /> Comfortable</label>
+            <label><input type="radio" name="density" value="compact" /> Compact</label>
+          </fieldset>
+          <fieldset>
+            <legend>Show on cards</legend>
+            <label><input type="checkbox" name="thumbs" /> Thumbnails</label>
+            <label><input type="checkbox" name="features" /> Feature lists</label>
+            <label><input type="checkbox" name="stats" /> Statistics</label>
+          </fieldset>
+          <footer>
+            <button type="button" class="chip" data-reset-settings>Reset to defaults</button>
+            <button class="chip chip--primary" value="close">Done</button>
+          </footer>
+        </form>
+      </dialog>
+
+    </main>
+    
+    
+    <script src="assets/story/gallery.js"></script>
+
+  </body>
+</html>

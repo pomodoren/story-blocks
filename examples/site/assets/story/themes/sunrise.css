@@ -1,0 +1,26 @@
+/* sunrise -- warm peach light theme with a coral accent and rounded cards. */
+#story {
+  --s-bg: #fff6ef;
+  --s-fg: #2d1f1a;
+  --s-muted: #7a6358;
+  --s-surface: #ffffff;
+  --s-border: #f0dccd;
+  --s-accent: #e2552d;
+  --s-accent-ink: #c4421f;
+  --s-code-bg: #fbebdf;
+
+  --s-font: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --s-serif: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --s-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --s-title-weight: 700;
+  --s-title-tracking: -.02em;
+
+  --s-h1: clamp(30px, 4.2vw, 46px);
+  --s-h2: clamp(20px, 2.4vw, 26px);
+  --s-body: 16px;
+
+  --s-radius: 18px;
+  --s-gap: clamp(52px, 7.5vh, 96px);
+  --s-measure: 42rem;
+  --s-shadow: 0 12px 36px #2d1f1a14;
+}

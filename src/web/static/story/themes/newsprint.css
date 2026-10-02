@@ -1,0 +1,28 @@
+/* newsprint -- high-contrast black on off-white, condensed grotesk, tight rhythm. */
+#story {
+  --s-bg: #f7f7f5;
+  --s-fg: #111111;
+  --s-muted: #5c5c5c;
+  --s-surface: #ffffff;
+  --s-border: #d7d7d2;
+  --s-accent: #1d4ed8;
+  --s-accent-ink: #1a44bd;
+  --s-code-bg: #ececea;
+
+  --s-font: "Helvetica Neue", Helvetica, Arial, "Roboto Condensed", sans-serif;
+  --s-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --s-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --s-title-weight: 800;
+  --s-title-tracking: -.03em;
+
+  --s-h1: clamp(32px, 4.6vw, 50px);
+  --s-h2: clamp(20px, 2.6vw, 26px);
+  --s-body: 15px;
+
+  --s-radius: 4px;
+  --s-gap: clamp(44px, 6vh, 72px);
+  --s-measure: 40rem;
+  --s-shadow: 0 8px 24px #11111114;
+}
+#story .sb__title { text-transform: none }
+#story .sb__eyebrow { letter-spacing: .14em }

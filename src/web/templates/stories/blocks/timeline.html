@@ -1,0 +1,18 @@
+{#- Vertical dated sequence. Item: title, text (Markdown), date, tag, image. No JS. -#}
+{% from "stories/blocks/_macros.html" import block_head %}
+{% set cfg = block.config %}
+<section class="sb sb--full sb--timeline" data-block="timeline">
+  {{ block_head(cfg, icons, cfg.intro) }}
+  <ol class="tl">
+    {% for ev in cfg.events %}
+    <li class="tl-item">
+      <span class="tl-dot" aria-hidden="true"></span>
+      {% if ev.date %}<time class="tl-date">{{ ev.date }}</time>{% endif %}
+      {% if ev.tag %}<span class="tl-tag">{{ ev.tag }}</span>{% endif %}
+      {% if ev.title %}<h3 class="tl-title">{{ ev.title }}</h3>{% endif %}
+      {% if ev.text %}<div class="tl-text">{{ ev.text | markdown }}</div>{% endif %}
+      {% if ev.image %}<img class="tl-img" src="{{ ev.image }}" alt="{{ '' if ev.decorative else (ev.alt or '') }}" loading="lazy" />{% endif %}
+    </li>
+    {% endfor %}
+  </ol>
+</section>

@@ -1,0 +1,123 @@
+/* the visual story builder (editor.js) */
+:root {
+  --bg: #f3f4f7; --panel: #fff; --panel-2: #f8f9fb; --line: #e1e5ea; --line-2: #cfd6de;
+  --fg: #1c2430; --muted: #6a7686; --accent: #e01e26; --accent-soft: #fdeceb; --ok: #067647; --bad: #b42318;
+  --shadow: 0 10px 40px #1c24302e;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14161a; --panel: #1b1e24; --panel-2: #20242b; --line: #2b303a; --line-2: #3a414d;
+    --fg: #e6e9ee; --muted: #8b95a5; --accent: #ff5257; --accent-soft: #3a1f21; --ok: #4ade80; --bad: #ff8a80;
+    --shadow: 0 10px 40px #000a;
+  }
+}
+body.story-editor-page { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.45 Inter, system-ui, sans-serif }
+#editor { display: grid; grid-template-columns: 310px minmax(340px, 460px) minmax(0, 1fr); grid-template-rows: 52px minmax(0, 1fr); height: 100vh }
+button, select, input, textarea { font: inherit; color: inherit }
+button { cursor: pointer }
+
+/* top bar */
+.ed-top { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; padding: 0 14px; background: var(--panel); border-bottom: 1px solid var(--line) }
+.ed-top button, .ed-link { height: 32px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--panel); color: var(--fg); text-decoration: none; display: inline-flex; align-items: center }
+.ed-top button:hover, .ed-link:hover { border-color: var(--accent) }
+.ed-top .primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600 }
+.ed-back { color: var(--muted); text-decoration: none }
+.ed-name { font-weight: 650 }
+.ed-dirty { color: var(--accent); font-size: 12px }
+.ed-dirty.is-error { color: #d6336c }
+.ed-live { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--muted); cursor: pointer }
+.ed-spacer { flex: 1 }
+.ed-devices { display: inline-flex; border: 1px solid var(--line-2); border-radius: 8px; overflow: hidden }
+.ed-top .ed-devices button { border: 0; border-radius: 0; height: 30px; font-size: 12px }
+.ed-top .ed-devices button.is-on { background: var(--accent-soft); color: var(--accent); font-weight: 600 }
+
+/* columns */
+.ed-outline, .ed-form { overflow: auto; background: var(--panel); border-right: 1px solid var(--line) }
+.ed-outline { padding: 10px 12px }
+.ed-form { padding: 0 18px 40px }
+.ed-preview { display: grid; justify-items: center; background: var(--bg); padding: 12px; overflow: auto }
+.ed-frame { width: 100%; height: 100%; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: #fff; box-shadow: 0 2px 14px #0001; transition: width .25s }
+.ed-preview iframe { width: 100%; height: 100%; border: 0 }
+
+/* outline */
+.ed-meta { margin: 0 0 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel-2) }
+.ed-meta summary { padding: 9px 12px; cursor: pointer; font-weight: 600 }
+.ed-meta > div { padding: 4px 12px 2px }
+.ed-outline-head { display: flex; align-items: center; justify-content: space-between; margin: 4px 0 8px }
+.ed-outline h2 { margin: 0; font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--muted) }
+.primary-soft { height: 28px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--accent-soft); color: var(--accent); font-weight: 600 }
+.ed-outline ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px }
+.ed-outline li { position: relative; display: flex; align-items: center; gap: 8px; padding: 7px 8px 7px 6px; border: 1px solid transparent; border-radius: 9px; cursor: pointer; background: var(--panel) }
+.ed-outline li:hover { background: var(--panel-2) }
+.ed-outline li.is-on { border-color: var(--accent); background: var(--accent-soft) }
+.ed-outline li.ed-gap { height: 4px; padding: 0; border: 0; background: none; justify-content: center; overflow: visible; cursor: default }
+.ed-outline li.ed-gap button { display: none; position: relative; z-index: 1; height: 20px; margin-top: -1px; padding: 0 10px; border: 1px dashed var(--accent); border-radius: 10px; background: var(--panel); color: var(--accent); font-size: 11px; cursor: pointer }
+.ed-outline li.ed-gap:hover { height: 22px; background: none }
+.ed-outline li.ed-gap:hover button { display: block }
+.ed-outline li.is-over { box-shadow: 0 -2px 0 var(--accent) }
+.ed-outline li.is-dragging { opacity: .4 }
+.ed-grip { color: var(--line-2); cursor: grab; user-select: none; letter-spacing: -2px }
+.ed-dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--cat, var(--muted)) }
+.ed-outline li .t { flex: 1; min-width: 0 }
+.ed-outline li .t b { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted) }
+.ed-outline li .t span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.ed-outline li .acts { display: none; gap: 2px }
+.ed-outline li:hover .acts, .ed-outline li.is-on .acts { display: flex }
+.ed-outline li .acts button { width: 24px; height: 24px; padding: 0; border: 0; border-radius: 6px; background: transparent; color: var(--muted) }
+.ed-outline li .acts button:hover { background: var(--line); color: var(--fg) }
+[data-cat="text"] { --cat: #3b82f6 } [data-cat="media"] { --cat: #a855f7 } [data-cat="data"] { --cat: #10b981 }
+[data-cat="maps"] { --cat: #f59e0b } [data-cat="structure"] { --cat: #64748b }
+
+/* form */
+.ed-form-head { position: sticky; top: 0; z-index: 2; margin: 0 -18px 14px; padding: 14px 18px 10px; background: var(--panel); border-bottom: 1px solid var(--line) }
+.ed-form-head h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 4px; font-size: 16px }
+.ed-form-head p { margin: 0; color: var(--muted); font-size: 12.5px }
+.ed-sec { margin: 0 0 14px; border: 1px solid var(--line); border-radius: 10px }
+.ed-sec > summary { padding: 9px 12px; cursor: pointer; font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--muted) }
+.ed-sec > div { padding: 4px 12px 2px }
+.ed-field { display: grid; gap: 4px; margin: 0 0 12px }
+.ed-field > label { font-size: 12px; font-weight: 600 }
+.ed-field > label i { color: var(--accent); font-style: normal }
+.ed-field small { color: var(--muted); font-weight: 400 }
+.ed-field input[type=text], .ed-field input[type=number], .ed-field select, .ed-field textarea { width: 100%; box-sizing: border-box; padding: 7px 9px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--panel); outline: none }
+.ed-field input:focus, .ed-field select:focus, .ed-field textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft) }
+.ed-field textarea { min-height: 88px; resize: vertical; line-height: 1.5 }
+.ed-field textarea.json { font: 12px/1.45 ui-monospace, monospace; min-height: 66px }
+.ed-field .is-bad { border-color: var(--bad) !important; background: var(--accent-soft) }
+.ed-media { display: flex; gap: 8px; align-items: center }
+.ed-media input { flex: 1 }
+.ed-media button { height: 34px; padding: 0 10px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--panel) }
+.ed-thumb { width: 54px; height: 54px; flex: none; border-radius: 8px; object-fit: cover; background: var(--panel-2); border: 1px solid var(--line) }
+.ed-item { margin: 0 0 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel-2) }
+.ed-item > summary { display: flex; align-items: center; gap: 6px; padding: 8px 10px; cursor: pointer; font-weight: 600 }
+.ed-item > summary span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.ed-item > summary button { width: 24px; height: 24px; padding: 0; border: 0; border-radius: 6px; background: transparent; color: var(--muted) }
+.ed-item > summary button:hover { background: var(--line) }
+.ed-item > div { padding: 8px 10px 0 }
+.ed-add-item { width: 100%; height: 34px; border: 1px dashed var(--line-2); border-radius: 10px; background: transparent; color: var(--muted) }
+.ed-add-item:hover { border-color: var(--accent); color: var(--accent) }
+.ed-empty { padding: 48px 8px; text-align: center; color: var(--muted) }
+
+/* dialogs: block palette + media picker */
+.ed-modal { position: fixed; z-index: 90; inset: 0; display: grid; place-items: center; background: #0007 }
+.ed-dialog { width: min(820px, 94vw); max-height: 86vh; display: flex; flex-direction: column; border-radius: 14px; background: var(--panel); box-shadow: var(--shadow); overflow: hidden }
+.ed-dialog header { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--line) }
+.ed-dialog header input { flex: 1; padding: 8px 10px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--panel) }
+.ed-dialog header button { height: 32px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--panel) }
+.ed-dialog .body { overflow: auto; padding: 12px 14px 16px }
+.ed-dialog h4 { margin: 14px 0 8px; font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--muted) }
+.ed-palette { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px }
+.ed-card { display: grid; gap: 3px; padding: 10px 12px; text-align: left; border: 1px solid var(--line); border-radius: 10px; background: var(--panel) }
+.ed-card:hover, .ed-card:focus { border-color: var(--accent); outline: none }
+.ed-card b { display: flex; align-items: center; gap: 7px }
+.ed-card span { font-size: 12px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden }
+.ed-media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px }
+.ed-media-grid button { display: grid; gap: 4px; padding: 6px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); text-align: left; font-size: 11px }
+.ed-media-grid button:hover { border-color: var(--accent) }
+.ed-media-grid img, .ed-media-grid .ph { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 6px; background: var(--panel-2); display: grid; place-items: center }
+.ed-media-grid span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+
+.ed-toast { position: fixed; z-index: 95; left: 50%; bottom: 22px; transform: translateX(-50%); max-width: min(680px, 92vw); padding: 10px 16px; border-radius: 10px; background: #1c2430; color: #fff; box-shadow: var(--shadow); font-size: 13px }
+.ed-toast.is-error { background: var(--bad); color: #fff }
+.ed-toast.is-ok { background: var(--ok); color: #fff }
+@media (max-width: 1100px) { #editor { grid-template-columns: 270px 1fr } .ed-preview { display: none } }

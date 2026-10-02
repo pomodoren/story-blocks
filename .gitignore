@@ -216,3 +216,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Unpublished story drafts
+_drafts/
+
+# Static-export download cache
+.vendor-cache/
+
+# Static-export staging directories
+.*.building
+.*.previous

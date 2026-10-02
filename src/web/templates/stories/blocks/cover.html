@@ -1,0 +1,28 @@
+<section class="sb sb--hero sb--cover" data-block="cover">
+  {% if block.config.image %}
+  <div class="sb__cover-media" aria-hidden="true"><img src="{{ block.config.image }}" alt="" /></div>
+  <div class="sb__cover-scrim" aria-hidden="true"></div>
+  {% endif %}
+    <div class="sb__body">
+    {% if block.config.eyebrow %}<p class="sb__eyebrow">{{ block.config.eyebrow }}</p>{% endif %}
+    <h1 class="sb__title">{{ block.config.title }}</h1>
+    {% if block.config.text %}<div class="sb__prose sb__dek">{{ block.config.text | markdown }}</div>{% endif %}
+    <div class="sb__actions">
+      <span class="sb__readtime" data-role="readtime" aria-live="polite"></span>
+      {% if 'present' in block.config.actions %}
+      <button type="button" class="sb__btn" data-action="present" aria-pressed="false">Present</button>
+      {% endif %}
+      {% if 'immerse' in block.config.actions %}
+      <button type="button" class="sb__btn" data-action="immerse" aria-pressed="false">Immersive</button>
+      {% endif %}
+      {% if 'share' in block.config.actions %}
+      <button type="button" class="sb__btn" data-action="share">Share</button>
+      {% endif %}
+      {% if 'print' in block.config.actions %}
+      <button type="button" class="sb__btn" data-action="print">Print</button>
+      {% endif %}
+    </div>
+    {% if block.config.image_credit %}<p class="sb__cover-credit">{{ block.config.image_credit }}</p>{% endif %}
+  </div>
+  <script type="application/json" data-block-config>{{ block.config | tojson }}</script>
+</section>

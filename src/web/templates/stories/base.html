@@ -1,0 +1,29 @@
+<!doctype html>
+{# The stories blueprint's own shell, namespaced at `stories/base.html` so a host app's
+   top-level `templates/base.html` can never shadow it via Flask's app-before-blueprint
+   template lookup. Hosts that want their own chrome around story pages extend this template
+   (or override `stories/base.html` explicitly) rather than relying on name collision. #}
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}{{ title }}{% endblock %} · Storyblocks</title>
+    <link rel="stylesheet" href="{{ url_for('stories.static', filename='story/base.css') }}" />
+    {% block head %}{% endblock %}
+  </head>
+  <body{% block body_attrs %}{% endblock %}>
+    {% block main %}
+    <main>
+      {% block page_header %}
+      <header>
+        <div>
+          <h1>{{ heading | default(title) }}</h1>
+        </div>
+      </header>
+      {% endblock %}
+      {% block content %}{% endblock %}
+    </main>
+    {% endblock %}
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

@@ -1,0 +1,77 @@
+/* Base styles for the Stories shell (`stories/base.html`), used standalone
+   (`python -m storyblocks`), when this blueprint is mounted in another app, and in the static
+   site. The design tokens, reset and page frame the gallery / editor index need -- a subset of
+   a dashboard app's own common.css, with the same values, so a story looks the same in both. */
+
+:root {
+  --sidebar-offset: 0px;           /* no dashboard sidebar to leave room for */
+  --surface: #fff;
+  --canvas: #f4f6f9;
+  --border: #dce2ea;
+  --text: #172236;
+  --muted: #68758a;
+  --accent: #0b8a73;
+  --accent-soft: #d9f3ec;
+
+  /* --- shared design system (matches the Districts page) --------------------------------- */
+  --surface-2: #f4f6f8;          /* nested panels, zebra rows */
+  --surface-3: #eef1f4;          /* table heads, chip rest state, footers */
+  --muted-2: #8b96a5;            /* mono captions / secondary meta */
+  --line-soft: #e6eaee;          /* inner row rules inside a card */
+  --accent-ink: #087562;         /* darker teal for links / active text on white */
+  --radius: 12px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+  --shadow-card: 0 8px 24px #26364c0d;
+  --shadow-pop: 0 8px 30px #26364c26;
+  --warn: #9a5410;
+  --warn-bg: #fff7ed;
+  --warn-border: #fdba74;
+  --danger: #8a281e;
+  --danger-bg: #fee9e7;
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --page-max: 1180px;
+}
+
+
+* { box-sizing: border-box }
+html, body { margin: 0 }
+body {
+  min-width: 320px; font: 14px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  color: var(--text); background: var(--canvas);
+}
+button, select, input { font: inherit }
+
+.eyebrow {
+  margin-bottom: 5px; color: var(--accent); font-size: 10px; font-weight: 800;
+  letter-spacing: .12em; text-transform: uppercase;
+}
+
+
+/* --- page frame ---------------------------------------------------------------------- */
+body.page {
+  padding: 32px 32px 32px calc(var(--sidebar-offset) + 32px);
+  transition: padding-left 180ms ease;
+}
+body.page > main { max-width: var(--page-max); margin: 0 auto }
+body.page > main > header,
+.page-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  flex-wrap: wrap; gap: 8px; margin: 0 0 24px 56px;
+}
+body.page h1 { margin: 0; font-size: 28px; letter-spacing: -.025em }
+body.page > main > header p, .page-header p {
+  margin: 6px 0 0; max-width: 76ch; color: var(--muted); font-size: 13px; line-height: 1.5;
+}
+body.page > main > header a, .page-header a { color: var(--accent) }
+
+/* --- card / section ----------------------------------------------------------------- */
+body.page section, .card-section {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card); padding: 22px; margin-bottom: 22px;
+}
+body.page section > h2, .card-section > h2 { margin: 0 0 4px; font-size: 15px }
+body.page section > p, .card-section > p {
+  margin: 0 0 16px; color: var(--muted); font-size: 13px; max-width: 80ch;
+}
+body.page section > h2 + p { margin-top: 2px }

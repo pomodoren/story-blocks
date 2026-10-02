@@ -1,0 +1,2 @@
+{% from "stories/blocks/_macros.html" import block_shell %}
+{% call block_shell("text", block.config, icons, "full", prose=block.config.body, extra=("sb--text-" ~ block.config.variant if block.config.variant else "")) %}{% endcall %}

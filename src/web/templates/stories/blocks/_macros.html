@@ -1,0 +1,49 @@
+{#- Shared block frame. `prose` is the rich (Markdown -> HTML, via the `markdown` filter)
+    body for this block type -- text.body, image-card.explanation, everything else's .text.
+    The media half is whatever the caller yields; `full` / `band` blocks have none. -#}
+{% macro block_shell(type, config, icons, layout='split', prose=None, extra='') %}
+<section class="sb sb--{{ layout }} sb--{{ type }}{% if extra %} {{ extra }}{% endif %}"
+         data-block="{{ type }}">
+  <div class="sb__body">
+    {% if config.icon and icons and config.icon in icons %}
+    <span class="sb__icon" aria-hidden="true">{{ icons[config.icon] | safe }}</span>
+    {% endif %}
+    {% if config.eyebrow %}<p class="sb__eyebrow">{{ config.eyebrow }}</p>{% endif %}
+    {% if config.title %}<h2 class="sb__title">{{ config.title }}</h2>{% endif %}
+    {% if prose %}<div class="sb__prose">{{ prose | markdown }}</div>{% endif %}
+    <div class="sb__live" data-role="prose" hidden></div>
+    <div class="sb__controls" data-role="controls" hidden></div>
+  </div>
+  {% if layout not in ('full', 'band') %}
+  <div class="sb__media">{{ caller() }}</div>
+  {% endif %}
+  <script type="application/json" data-block-config>{{ config | tojson }}</script>
+</section>
+{% endmacro %}
+
+{#- The map + legend the live map blocks share. -#}
+{% macro map_media(cfg=None) %}
+  <div class="sb__map" data-role="map"></div>
+  <div class="sb__legend" data-role="legend" hidden></div>
+  {{ map_source(cfg) }}
+{% endmacro %}
+
+{#- The data credit under a map: `source` is inline Markdown, so it can link to the dataset. -#}
+{% macro map_source(cfg) %}
+  {% if cfg and cfg.source %}<p class="sb__map-source">Source: {{ cfg.source | md_inline }}</p>{% endif %}
+{% endmacro %}
+
+{#- A chart canvas for the stat blocks. -#}
+{% macro chart_media() %}
+  <div class="sb__chart" data-role="chart"></div>
+{% endmacro %}
+
+{#- The icon / eyebrow / title / intro header the stacked (non-split) blocks open with. -#}
+{% macro block_head(cfg, icons, intro=None) %}
+<header class="sb__head">
+  {% if cfg.icon and icons and cfg.icon in icons %}<span class="sb__icon" aria-hidden="true">{{ icons[cfg.icon] | safe }}</span>{% endif %}
+  {% if cfg.eyebrow %}<p class="sb__eyebrow">{{ cfg.eyebrow }}</p>{% endif %}
+  {% if cfg.title %}<h2 class="sb__title">{{ cfg.title }}</h2>{% endif %}
+  {% if intro %}<div class="sb__prose">{{ intro | markdown }}</div>{% endif %}
+</header>
+{% endmacro %}

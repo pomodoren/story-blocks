@@ -1,0 +1,7 @@
+{% from "stories/blocks/_macros.html" import block_head %}
+{% set cfg = block.config %}
+<section class="sb sb--full sb--audio" data-block="audio">
+  {{ block_head(cfg, icons, cfg.text) }}
+  <audio class="au" src="{{ cfg.src }}" controls preload="metadata"></audio>
+  {% if cfg.caption %}<p class="tb-caption">{{ cfg.caption }}</p>{% endif %}
+</section>

@@ -1,0 +1,185 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Narta lagoon",
+    "designation": "Ramsar wetland",
+    "area_km2": 4.2,
+    "pressure": 62
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       19.4,
+       40.5
+      ],
+      [
+       19.46,
+       40.5
+      ],
+      [
+       19.46,
+       40.57
+      ],
+      [
+       19.4,
+       40.57
+      ],
+      [
+       19.4,
+       40.5
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Vjosa delta",
+    "designation": "Nature reserve",
+    "area_km2": 18.5,
+    "pressure": 48
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       19.33,
+       40.6
+      ],
+      [
+       19.4,
+       40.6
+      ],
+      [
+       19.4,
+       40.69
+      ],
+      [
+       19.33,
+       40.69
+      ],
+      [
+       19.33,
+       40.6
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Pine coast",
+    "designation": "Protected landscape",
+    "area_km2": 9.8,
+    "pressure": 35
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       19.44,
+       40.4
+      ],
+      [
+       19.52,
+       40.4
+      ],
+      [
+       19.52,
+       40.47
+      ],
+      [
+       19.44,
+       40.47
+      ],
+      [
+       19.44,
+       40.4
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Karaburun ridge",
+    "designation": "Protected landscape",
+    "area_km2": 25.0,
+    "pressure": 27
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       19.3,
+       40.3
+      ],
+      [
+       19.38,
+       40.3
+      ],
+      [
+       19.38,
+       40.42
+      ],
+      [
+       19.3,
+       40.42
+      ],
+      [
+       19.3,
+       40.3
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Dune belt",
+    "designation": "Nature reserve",
+    "area_km2": 3.1,
+    "pressure": 71
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       19.46,
+       40.57
+      ],
+      [
+       19.52,
+       40.57
+      ],
+      [
+       19.52,
+       40.64
+      ],
+      [
+       19.46,
+       40.64
+      ],
+      [
+       19.46,
+       40.57
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}

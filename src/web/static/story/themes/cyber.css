@@ -1,0 +1,45 @@
+/* cyber -- an exposure control room look: near-black navy, terminal-green accent,
+   monospaced HUD labels, square hairline panels with green-tinted borders. */
+#story {
+  --s-bg: #05070c;
+  --s-fg: #e8eef8;
+  --s-muted: #8a97ad;
+  --s-surface: #0a1220;
+  --s-border: #25324a;
+  --s-accent: #7dffb2;
+  --s-accent-ink: #7dffb2;
+  --s-code-bg: #131f36;
+
+  --s-font: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --s-serif: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --s-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --s-title-weight: 700;
+  --s-title-tracking: -.01em;
+
+  --s-h1: clamp(30px, 4.2vw, 46px);
+  --s-h2: clamp(20px, 2.4vw, 26px);
+  --s-body: 15px;
+
+  --s-radius: 5px;
+  --s-gap: clamp(48px, 7vh, 88px);
+  --s-measure: 42rem;
+  --s-shadow: 0 10px 30px #0008;
+}
+#story .sb__eyebrow { color: var(--s-accent); letter-spacing: .12em }
+#story .sb__prose code { color: var(--s-accent) }
+/* HUD panels: translucent, green-tinted hairline border */
+#story .sb__map, #story .sb-groups, #story .sb__legend, #story .sb__chart, #story .sb-tiles {
+  border-color: #7dffb259;
+}
+#story .sb__map { background: #080e18 }
+#story .sb-tiles { background: var(--s-border) }
+#story .sb-tile b { font-family: var(--s-font) }
+#story .sb-tile span, #story .sb__legend .legend-range { font-family: var(--s-mono); letter-spacing: .1em }
+/* controls: mono, uppercase, accent fill when active with a soft glow */
+#story .sb-chip, #story .sb-list button, #story .sb__btn { font-family: var(--s-mono); letter-spacing: .08em; border-radius: var(--s-radius) }
+#story .sb-chip:hover, #story .sb-list button:hover { border-color: var(--s-accent); color: var(--s-accent) }
+#story .sb-chip.is-active { background: var(--s-accent); border-color: var(--s-accent); color: #04140c; box-shadow: 0 0 14px #7dffb266 }
+#story .sb-list button.is-active { box-shadow: 0 0 12px #7dffb233 }
+#story .sb__btn:hover { color: var(--s-accent); box-shadow: 0 0 12px #7dffb233 }
+#story .sb--cover { border-bottom-color: #7dffb240 }
+#story .maplibregl-popup-content { background: #080e18f2; color: var(--s-fg); border: 1px solid #7dffb259; border-radius: var(--s-radius); font-family: var(--s-mono) }

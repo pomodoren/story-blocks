@@ -1,0 +1,4 @@
+{% from "stories/blocks/_macros.html" import block_shell, map_media %}
+{% call block_shell("risk", block.config, icons, "split", prose=block.config.text) %}
+  {{ map_media() }}
+{% endcall %}

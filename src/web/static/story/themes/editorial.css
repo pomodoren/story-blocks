@@ -1,0 +1,26 @@
+/* editorial -- warm paper, serif headings, generous measure. The default. */
+#story {
+  --s-bg: #fbf9f4;
+  --s-fg: #23201c;
+  --s-muted: #6b6459;
+  --s-surface: #ffffff;
+  --s-border: #e4ddd0;
+  --s-accent: #9a3412;
+  --s-accent-ink: #8a2f10;
+  --s-code-bg: #efeae0;
+
+  --s-font: "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+  --s-serif: "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+  --s-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  --s-title-weight: 600;
+  --s-title-tracking: -.01em;
+
+  --s-h1: clamp(30px, 4vw, 44px);
+  --s-h2: clamp(21px, 2.4vw, 27px);
+  --s-body: 16px;
+
+  --s-radius: 12px;
+  --s-gap: clamp(56px, 8vh, 104px);
+  --s-measure: 44rem;
+  --s-shadow: 0 12px 40px #23201c14;
+}

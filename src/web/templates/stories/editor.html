@@ -1,0 +1,37 @@
+{% extends "stories/base.html" %}
+{% block body_attrs %} data-nav="collapsed" class="story-editor-page"{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('stories.static', filename='story/editor.css') }}" />{% endblock %}
+{% block main %}
+<div id="editor" data-story-id="{{ story_id }}"
+     data-api="{{ url_for('stories.story_editor.api_get', story_id=story_id) }}"
+     data-media-api="{{ url_for('stories.story_editor.api_media', story_id=story_id) }}"
+     data-draft-api="{{ url_for('stories.story_editor.api_draft', story_id=story_id) }}"
+     data-publish-api="{{ url_for('stories.story_editor.api_publish', story_id=story_id) }}"
+     data-preview="{{ url_for('stories.reader', story_id=story_id) }}">
+  <header class="ed-top">
+    <a href="{{ url_for('stories.story_editor.index') }}" class="ed-back" title="All stories">‹ Stories</a>
+    <strong class="ed-name">{{ story_id }}</strong>
+    <span class="ed-dirty" hidden title="Unsaved changes">●</span>
+    <span class="ed-spacer"></span>
+    <div class="ed-devices" role="group" aria-label="Preview width">
+      <button type="button" data-device="" class="is-on" title="Full width">Desktop</button>
+      <button type="button" data-device="820px" title="Tablet">Tablet</button>
+      <button type="button" data-device="390px" title="Phone">Phone</button>
+    </div>
+    <a class="ed-link" href="{{ url_for('stories.reader', story_id=story_id) }}" target="_blank" rel="noopener">Open ↗</a>
+    <label class="ed-live" title="Save the draft and refresh the preview as you type"><input type="checkbox" data-live checked /> Live preview</label>
+    <button type="button" data-act="discard" title="Throw away the unpublished draft">Discard</button>
+    <button type="button" data-act="draft" title="Validate and preview (Ctrl/⌘ S)">Save draft</button>
+    <button type="button" data-act="publish" class="primary" title="Rewrite the spine and rebuild the story">Publish</button>
+  </header>
+  <aside class="ed-outline">
+    <details class="ed-meta"><summary>Story settings</summary><div data-role="meta"></div></details>
+    <div class="ed-outline-head"><h2>Blocks</h2><button type="button" data-act="add" class="primary-soft">+ Add</button></div>
+    <ol data-role="blocks"></ol>
+  </aside>
+  <section class="ed-form" data-role="form"></section>
+  <section class="ed-preview"><div class="ed-frame"><iframe title="Story preview"></iframe></div></section>
+  <div class="ed-toast" role="status" aria-live="polite" hidden></div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('stories.static', filename='story/editor.js') }}"></script>{% endblock %}

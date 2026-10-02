@@ -1,0 +1,179 @@
+/* Stories gallery. Page frame (body.page), cards and .empty are shared in common.css. */
+
+/* --- colour schemes: tokens only, so the whole page follows --------------------------- */
+:root[data-scheme="dark"] {
+  --surface: #161c27; --canvas: #0e121a; --border: #2a3445; --text: #e6ebf2; --muted: #9aa7ba;
+  --accent: #2fbfa3; --accent-soft: #123a33; --accent-ink: #5fd8c0; --surface-2: #1c2431;
+  --surface-3: #202a3a; --line-soft: #263042; --shadow-card: 0 8px 24px #0006; color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-scheme]) {
+    --surface: #161c27; --canvas: #0e121a; --border: #2a3445; --text: #e6ebf2; --muted: #9aa7ba;
+    --accent: #2fbfa3; --accent-soft: #123a33; --accent-ink: #5fd8c0; --surface-2: #1c2431;
+    --surface-3: #202a3a; --line-soft: #263042; --shadow-card: 0 8px 24px #0006; color-scheme: dark;
+  }
+}
+
+/* --- page frame ------------------------------------------------------------------------ */
+html { scroll-behavior: smooth; scroll-padding-top: 72px }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap }
+body.gallery-page { padding: 0 24px 32px }
+body.gallery-page > main > header.gallery-hero { margin: 8px 0 24px }
+body.gallery-page h1 { font-size: 34px; letter-spacing: -.03em }
+.gallery-hero p { font-size: 15px !important }
+:where(a, button, input, select, summary):focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+
+/* --- navbar ---------------------------------------------------------------------------- */
+.gallery-nav {
+  position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 16px;
+  margin: 0 0 24px; min-height: 60px; background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 0 0 100vmax var(--surface); clip-path: inset(0 -100vmax);
+}
+.gallery-nav-brand { display: flex; align-items: center; gap: 10px; padding-right: 20px; border-right: 1px solid var(--border); font-size: 19px; font-weight: 800; letter-spacing: -.02em; line-height: 1; color: var(--text); text-decoration: none }
+.gallery-nav-mark { width: 18px; height: 18px; border-radius: 6px; background: linear-gradient(135deg, var(--accent), #e8559a) }
+.gallery-nav-links { display: flex; align-self: stretch; gap: 4px; flex: 1; overflow-x: auto }
+.gallery-nav-links a { display: flex; align-items: center; padding: 0 12px; border-bottom: 2px solid transparent; color: var(--muted); font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap; transition: color 120ms ease, border-color 120ms ease }
+.gallery-nav-links a:hover { color: var(--text); border-bottom-color: var(--accent) }
+.gallery-nav-count { color: var(--muted); font-size: 12px; white-space: nowrap }
+.gallery-icon-btn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; cursor: pointer;
+  color: var(--text); background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius-pill); font-size: 13px; font-weight: 600;
+}
+.gallery-icon-btn:hover { border-color: var(--accent) }
+
+/* --- summary + toolbar ------------------------------------------------------------------- */
+.gallery-summary {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 1px; margin: 0 0 8px;
+  overflow: hidden; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-lg);
+}
+.gallery-summary div { display: flex; flex-direction: column; gap: 2px; padding: 14px 18px; background: var(--surface) }
+.gallery-summary strong { font-size: 26px; font-weight: 800; letter-spacing: -.02em; line-height: 1.1 }
+.gallery-summary span { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em }
+
+.gallery-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 20px 0 8px }
+.gallery-search { flex: 1 1 240px }
+.gallery-search input, .gallery-sort select {
+  width: 100%; padding: 9px 12px; color: var(--text); background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius);
+}
+.gallery-sort { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px }
+.gallery-sort select { width: auto }
+.gallery-chips { display: flex; flex-wrap: wrap; gap: 6px }
+.chip {
+  padding: 6px 12px; cursor: pointer; color: var(--text); background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-pill); font-size: 12px; font-weight: 600;
+}
+.chip:hover { border-color: var(--accent) }
+.chip[aria-pressed="true"], .chip--primary { color: #fff; background: var(--accent); border-color: var(--accent) }
+.gallery-view { display: inline-flex; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius) }
+.gallery-view button { padding: 8px 12px; cursor: pointer; color: var(--muted); background: var(--surface); border: 0; font-size: 12px; font-weight: 600 }
+.gallery-view button + button { border-left: 1px solid var(--border) }
+.gallery-view button[aria-pressed="true"] { color: var(--accent-ink); background: var(--accent-soft) }
+.gallery-result { margin: 0 0 14px; color: var(--muted); font-size: 12px }
+
+/* --- cards -------------------------------------------------------------------------------- */
+.story-grid {
+  display: grid; gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+.story-tile {
+  display: flex; flex-direction: column; gap: 0;
+  padding: 0; overflow: hidden; text-decoration: none; color: var(--text);
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border-top: 4px solid var(--tile-accent, var(--accent));
+  transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+.story-tile:hover { box-shadow: 0 12px 28px #26364c1a; transform: translateY(-2px) }
+.story-tile:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px }
+.story-tile[hidden], .empty[hidden] { display: none }
+.story-tile h2 { margin: 0; font-size: 17px; letter-spacing: -.01em; line-height: 1.3 }
+
+.story-tile--editorial { --tile-accent: #9a3412 }
+.story-tile--slate { --tile-accent: var(--accent) }
+.story-tile--newsprint { --tile-accent: #1d4ed8 }
+
+.story-tile-blurb {
+  margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.story-tile-meta {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 20px 16px; margin-top: auto;
+  padding-top: 12px; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px;
+}
+.story-tile-meta .tag {
+  padding: 2px 8px; font-weight: 700; font-size: 11px; letter-spacing: .02em;
+  color: var(--accent-ink); background: var(--accent-soft); border-radius: 999px;
+}
+
+.story-tile-thumb {
+  position: relative; aspect-ratio: 16 / 9; overflow: hidden;
+  background: linear-gradient(135deg, var(--tile-accent, var(--accent)), var(--accent-soft, #e8edf3));
+}
+.story-tile-thumb img { display: block; width: 100%; height: 100%; object-fit: cover }
+.story-tile-badge {
+  position: absolute; top: 10px; left: 10px; padding: 3px 9px; color: #fff; font-size: 11px;
+  font-weight: 700; letter-spacing: .03em; background: #0009; border-radius: var(--radius-pill);
+  backdrop-filter: blur(4px);
+}
+.story-tile-body { display: flex; flex-direction: column; gap: 8px; padding: 16px 20px 8px }
+.story-tile-features { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; line-height: 1.5; text-transform: capitalize }
+
+.story-tile-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin: 8px 20px 0;
+  background: var(--border); border: 1px solid var(--border); border-radius: var(--radius, 8px); overflow: hidden;
+}
+.story-tile-stats div { padding: 8px 10px; background: var(--surface) }
+.story-tile-stats dt { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .06em }
+.story-tile-stats dd { margin: 2px 0 0; font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums }
+
+/* --- settings-driven layout --------------------------------------------------------------- */
+[data-density="compact"] .story-grid { gap: 12px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) }
+[data-density="compact"] .story-tile-body { padding: 12px 14px 2px }
+[data-density="compact"] .story-tile-stats, [data-density="compact"] .story-tile-meta { margin-left: 14px; margin-right: 14px }
+[data-density="compact"] .story-tile-blurb { -webkit-line-clamp: 2 }
+[data-view="list"] .story-grid { grid-template-columns: 1fr }
+[data-view="list"] .story-tile { display: grid; grid-template-columns: 220px 1fr; align-items: start }
+[data-view="list"] .story-tile-thumb { grid-row: 1 / 4; height: 100%; aspect-ratio: auto; min-height: 150px }
+[data-view="list"] .story-tile-stats { grid-template-columns: repeat(6, 1fr) }
+[data-hide~="thumbs"] .story-tile-thumb { display: none }
+[data-hide~="thumbs"][data-view="list"] .story-tile { grid-template-columns: 1fr }
+[data-hide~="features"] .story-tile-features { display: none }
+[data-hide~="stats"] .story-tile-stats { display: none }
+@media (max-width: 720px) {
+  [data-view="list"] .story-tile { grid-template-columns: 1fr }
+  [data-view="list"] .story-tile-thumb { grid-row: auto; aspect-ratio: 16 / 9 }
+  [data-view="list"] .story-tile-stats { grid-template-columns: repeat(3, 1fr) }
+  .gallery-nav-count { display: none }
+  body.gallery-page { padding: 0 14px 24px }
+}
+
+/* --- explanatory sections ----------------------------------------------------------------- */
+.gallery-explain { margin-top: 36px }
+.gallery-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 16px 0 0; padding: 0; list-style: none; counter-reset: step }
+.gallery-steps li { display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; background: var(--surface-2); border: 1px solid var(--line-soft); border-radius: var(--radius); counter-increment: step }
+.gallery-steps li::before { content: counter(step); display: grid; place-items: center; width: 24px; height: 24px; color: #fff; background: var(--accent); border-radius: 50%; font-size: 12px; font-weight: 800 }
+.gallery-steps span { color: var(--muted); font-size: 13px; line-height: 1.5 }
+.gallery-steps a { color: var(--accent-ink) }
+.gallery-explain code { padding: 1px 5px; font-family: var(--mono); font-size: 12px; background: var(--surface-3); border-radius: 4px }
+.gallery-glossary { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px 24px; margin: 16px 0 0 }
+.gallery-glossary dt { font-weight: 700; font-size: 13px }
+.gallery-glossary dd { margin: 2px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5 }
+.gallery-footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px }
+.gallery-footer a { color: var(--accent-ink) }
+
+/* --- settings dialog ------------------------------------------------------------------------ */
+.gallery-settings { width: min(420px, calc(100vw - 32px)); padding: 0; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-pop) }
+.gallery-settings::backdrop { background: #0008 }
+.gallery-settings form { padding: 18px 20px 16px }
+.gallery-settings header { display: flex; justify-content: space-between; align-items: center }
+.gallery-settings h2 { margin: 0; font-size: 17px }
+.settings-note { margin: 4px 0 12px; color: var(--muted); font-size: 12px }
+.gallery-settings fieldset { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0 0 12px; padding: 10px 12px; border: 1px solid var(--line-soft); border-radius: var(--radius) }
+.gallery-settings legend { padding: 0 6px; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase }
+.gallery-settings label { display: flex; align-items: center; gap: 6px; font-size: 13px }
+.gallery-settings footer { display: flex; justify-content: space-between; margin-top: 4px }

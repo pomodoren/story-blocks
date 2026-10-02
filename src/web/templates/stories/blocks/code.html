@@ -1,0 +1,11 @@
+{#- A literal code listing: `code` is autoescaped (never interpreted), shown in a monospaced panel. -#}
+{% from "stories/blocks/_macros.html" import block_head %}
+{% set cfg = block.config %}
+<section class="sb sb--full-wide sb--code" data-block="code">
+  {{ block_head(cfg, icons) }}
+  <figure class="cd">
+    {% if cfg.language %}<figcaption class="cd-lang">{{ cfg.language }}</figcaption>{% endif %}
+    <pre class="cd-pre"><code>{{ cfg.code | trim }}</code></pre>
+    {% if cfg.caption %}<p class="tb-caption">{{ cfg.caption }}</p>{% endif %}
+  </figure>
+</section>

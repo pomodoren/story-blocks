@@ -1,0 +1,8 @@
+{% set cfg = block.config %}
+<aside class="sb sb--full sb--callout sb--callout-{{ cfg.tone }}" data-block="callout">
+  {% if cfg.icon and icons and cfg.icon in icons %}<span class="sb__icon" aria-hidden="true">{{ icons[cfg.icon] | safe }}</span>{% endif %}
+  <div>
+    {% if cfg.eyebrow or cfg.title %}<p class="co-title">{{ cfg.title or cfg.eyebrow }}</p>{% endif %}
+    <div class="sb__prose">{{ cfg.text | markdown }}</div>
+  </div>
+</aside>

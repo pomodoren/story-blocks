@@ -1,0 +1,26 @@
+/* forest -- light sage background, deep green accent, serif headings. */
+#story {
+  --s-bg: #f2f5ef;
+  --s-fg: #1c2a20;
+  --s-muted: #5d6f60;
+  --s-surface: #ffffff;
+  --s-border: #d6dfd0;
+  --s-accent: #2f6f46;
+  --s-accent-ink: #255a39;
+  --s-code-bg: #e7ede2;
+
+  --s-font: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --s-serif: "Iowan Old Style", Palatino, Georgia, serif;
+  --s-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --s-title-weight: 600;
+  --s-title-tracking: -.01em;
+
+  --s-h1: clamp(30px, 4vw, 44px);
+  --s-h2: clamp(21px, 2.4vw, 27px);
+  --s-body: 16px;
+
+  --s-radius: 14px;
+  --s-gap: clamp(52px, 7.5vh, 96px);
+  --s-measure: 42rem;
+  --s-shadow: 0 10px 32px #1c2a2014;
+}

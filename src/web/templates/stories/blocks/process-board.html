@@ -1,0 +1,28 @@
+{#- Phased columns of steps + project chips: picking a chip draws a wire through the steps that
+    project touched and dims the rest (static/story/blocks/process-board.js).
+    phases: [{title, nodes: [{id, title, text}]}]; projects: [{id, name, path: [node ids], note}]. -#}
+{% from "stories/blocks/_macros.html" import block_head %}
+{% set cfg = block.config %}
+<section class="sb sb--full-wide sb--process-board" data-block="process-board">
+  {{ block_head(cfg, icons, cfg.intro) }}
+  <div class="pb-picker" data-role="picker"></div>
+  <p class="pb-note" data-role="note" aria-live="polite"></p>
+  <div class="pb-board" data-role="board">
+    <svg class="pb-wires" data-role="wires" aria-hidden="true"></svg>
+    <div class="pb-cols">
+      {% for phase in cfg.phases %}
+      <div class="pb-col">
+        <div class="pb-phase"><span>Phase {{ loop.index }}</span>{% if phase.title %}<strong>{{ phase.title }}</strong>{% endif %}</div>
+        {% for node in phase.nodes %}
+        <div class="pb-node" data-n="{{ node.id }}">
+          <span class="pb-ord" aria-hidden="true"></span>
+          <h4>{{ node.title }}</h4>
+          {% if node.text %}<p>{{ node.text }}</p>{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <script type="application/json" data-block-config>{{ cfg | tojson }}</script>
+</section>

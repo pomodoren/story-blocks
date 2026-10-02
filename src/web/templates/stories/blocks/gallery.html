@@ -1,0 +1,24 @@
+{#- Photos as a grid / mosaic / strip; each opens in a lightbox (static/story/blocks/gallery.js).
+    Item: src, title, text (caption, Markdown-inline), credit, wide (spans two columns). -#}
+{% from "stories/blocks/_macros.html" import block_head %}
+{% set cfg = block.config %}
+<section class="sb sb--full-wide sb--gallery sb--gallery-{{ cfg.mode }}" data-block="gallery" style="--cols: {{ cfg.columns }}">
+  {{ block_head(cfg, icons, cfg.intro) }}
+  <div class="ga-grid" role="list">
+    {% for item in cfg.images %}
+    <figure class="ga-item{% if item.wide %} is-wide{% endif %}" role="listitem" data-i="{{ loop.index0 }}">
+      <button type="button" class="ga-open" aria-label="Open {{ item.title or 'photo ' ~ loop.index }}">
+        <img src="{{ item.src }}" alt="{{ '' if item.decorative else (item.alt or item.title or '') }}" loading="lazy" />
+      </button>
+      {% if item.title or item.text or item.credit %}
+      <figcaption>
+        {% if item.title %}<strong>{{ item.title }}</strong>{% endif %}
+        {% if item.text %}<span class="ga-text">{{ item.text | md_inline }}</span>{% endif %}
+        {% if item.credit %}<small>{{ item.credit }}</small>{% endif %}
+      </figcaption>
+      {% endif %}
+    </figure>
+    {% endfor %}
+  </div>
+  <script type="application/json" data-block-config>{{ cfg | tojson }}</script>
+</section>

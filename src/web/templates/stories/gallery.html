@@ -1,0 +1,197 @@
+{% extends "stories/base.html" %}
+{% block body_attrs %} class="page gallery-page"{% endblock %}
+
+{% block head %}
+    <script>
+      /* apply the saved colour scheme before first paint, so there is no light flash */
+      try {
+        var s = JSON.parse(localStorage.getItem("storyblocks.gallery") || "{}");
+        if (s.scheme === "light" || s.scheme === "dark") document.documentElement.dataset.scheme = s.scheme;
+      } catch (e) { /* storage blocked: follow the system scheme */ }
+    </script>
+    <link rel="stylesheet" href="{{ url_for('stories.static', filename='story/gallery.css') }}" />
+{% endblock %}
+
+{% block page_header %}
+      {% set collections = cards | map(attribute='collection') | select | unique | list %}
+      <nav class="gallery-nav" aria-label="Primary">
+        <a class="gallery-nav-brand" href="{{ './' if static_site else '/stories/' }}">
+          <span class="gallery-nav-mark" aria-hidden="true"></span>Stories
+        </a>
+        <span class="gallery-nav-links">
+          <a href="#stories">Library</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#reading-the-numbers">Reading the numbers</a>
+          {% if not static_site %}<a href="/story-editor/">Editor</a>{% endif %}
+        </span>
+        <span class="gallery-nav-count">{{ cards | length }} stor{{ 'y' if cards | length == 1 else 'ies' }}</span>
+        <button type="button" class="gallery-icon-btn" data-open-settings aria-haspopup="dialog">
+          <span aria-hidden="true">&#9881;</span> Settings
+        </button>
+      </nav>
+      <header class="gallery-hero">
+        <div>
+          <div class="eyebrow">{{ 'Published stories' if static_site else 'Workspace' }}</div>
+          <h1>Story library</h1>
+          <p>
+            {% if static_site %}
+            Sourced, scroll-driven walkthroughs. Each story is a self-contained page &mdash;
+            what it shows was fixed when it was published, so it opens anywhere without a server.
+            {% else %}
+            Block-built walkthroughs previewed live from this workspace. Open a story to read it,
+            or use the editor to change it; rebuild a story after editing its spine.
+            {% endif %}
+          </p>
+        </div>
+      </header>
+{% endblock %}
+
+{% block content %}
+      {% if not cards %}
+      <p class="empty">No stories are authored yet. Add a folder with a
+        <code>story.md</code> to your content directory and run <code>storyblocks build --content /path/to/stories</code>.</p>
+      {% else %}
+      {% set collections = cards | map(attribute='collection') | select | unique | list %}
+      <section class="gallery-summary" aria-label="Totals">
+        <div><strong>{{ cards | length }}</strong><span>stor{{ 'y' if cards | length == 1 else 'ies' }}</span></div>
+        <div><strong>{{ cards | sum(attribute='block_count') }}</strong><span>blocks</span></div>
+        <div><strong>{{ cards | sum(attribute='section_count') }}</strong><span>sections</span></div>
+        <div><strong>{{ cards | sum(attribute='image_count') }}</strong><span>images</span></div>
+        <div><strong>{{ collections | length }}</strong><span>collections</span></div>
+      </section>
+
+      <div class="gallery-toolbar" id="stories" role="search">
+        <label class="gallery-search">
+          <span class="sr-only">Search stories</span>
+          <input type="search" id="gallery-search" placeholder="Search stories  (press / )" autocomplete="off" />
+        </label>
+        {% if collections %}
+        <div class="gallery-chips" role="group" aria-label="Filter by collection">
+          <button type="button" class="chip" data-collection="" aria-pressed="true">All</button>
+          {% for name in collections %}<button type="button" class="chip" data-collection="{{ name }}" aria-pressed="false">{{ name }}</button>{% endfor %}
+          {% if cards | rejectattr('collection') | list %}<button type="button" class="chip" data-collection="__none" aria-pressed="false">Other</button>{% endif %}
+        </div>
+        {% endif %}
+        <label class="gallery-sort">
+          <span>Sort</span>
+          <select id="gallery-sort">
+            <option value="authored">Authored order</option>
+            <option value="title">Title A&ndash;Z</option>
+            <option value="blocks">Most blocks</option>
+          </select>
+        </label>
+        <div class="gallery-view" role="group" aria-label="Layout">
+          <button type="button" data-view="grid" aria-pressed="true" title="Grid">Grid</button>
+          <button type="button" data-view="list" aria-pressed="false" title="List">List</button>
+        </div>
+      </div>
+      <p class="gallery-result" id="gallery-result" aria-live="polite"></p>
+
+      <div class="story-grid" id="story-grid">
+        {% for card in cards %}
+        <a class="story-tile story-tile--{{ card.theme }}" href="/story/{{ card.id }}"
+           data-collection="{{ card.collection or '__none' }}"
+           data-title="{{ card.title | lower }}" data-blocks="{{ card.block_count }}" data-order="{{ loop.index0 }}"
+           data-search="{{ [card.title, card.eyebrow, card.blurb | md_inline | striptags, card.collection, card.theme, card.iso3, card.scenario, card.features | join(' ')] | select | join(' ') | lower }}">
+          <div class="story-tile-thumb">
+            {% if card.image %}<img src="{{ card.image }}" alt="" loading="lazy" />{% endif %}
+            {% if card.collection %}<span class="story-tile-badge">{{ card.collection }}</span>{% endif %}
+          </div>
+          <div class="story-tile-body">
+            <p class="eyebrow">{{ card.eyebrow }}</p>
+            <h2>{{ card.title }}</h2>
+            <p class="story-tile-blurb">{{ card.blurb | md_inline | striptags }}</p>
+            {% if card.features %}
+            <ul class="story-tile-features">
+              {% for feature in card.features %}<li>{{ feature }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+          <dl class="story-tile-stats">
+            <div title="Blocks: the building units of a story (text, maps, charts, media)"><dt>Blocks</dt><dd>{{ card.block_count }}</dd></div>
+            <div title="Block types: how many different kinds of block it uses"><dt>Block types</dt><dd>{{ card.type_count }}</dd></div>
+            <div title="Sections: parts opened by a cover or a top-level heading"><dt>Sections</dt><dd>{{ card.section_count }}</dd></div>
+            <div title="Images: blocks that carry a picture"><dt>Images</dt><dd>{{ card.image_count }}</dd></div>
+            <div title="Data blocks: interactive blocks beyond plain prose and media"><dt>Data blocks</dt><dd>{{ card.rich_count }}</dd></div>
+            <div title="Languages: the story plus its built translations"><dt>Languages</dt><dd>{{ card.languages }}</dd></div>
+          </dl>
+          <div class="story-tile-meta">
+            <span class="tag">{{ card.theme }}</span>
+            {% if card.iso3 %}<span class="tag">{{ card.iso3 }}</span>{% endif %}
+            {% if card.scenario %}<span class="tag">{{ card.scenario }}</span>{% endif %}
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      <p class="empty" id="gallery-empty" hidden>No stories match. Clear the search or pick another collection.</p>
+
+      <section class="gallery-explain" id="how-it-works">
+        <h2>How a story is made</h2>
+        <p>A story is a folder of plain files. The page you read is generated from them, so it stays reviewable and reproducible.</p>
+        <ol class="gallery-steps">
+          <li><strong>Write the spine</strong><span>Author <code>story.md</code>: Markdown prose with <code>block</code> fences for maps, charts, galleries and more.</span></li>
+          <li><strong>Build</strong><span><code>storyblocks build --content /path/to/stories</code> validates the spine and writes the matching <code>story.yaml</code>.</span></li>
+          <li><strong>Preview</strong><span>Run the local app to read it here{% if not static_site %} &mdash; or edit visually in the <a href="/story-editor/">editor</a>{% endif %}.</span></li>
+          <li><strong>Export</strong><span><code>storyblocks export --content /path/to/stories</code> produces a static site with relative links that works from any file host.</span></li>
+        </ol>
+      </section>
+
+      <section class="gallery-explain" id="reading-the-numbers">
+        <h2>Reading the numbers</h2>
+        <p>Every card summarises its story from the built artifact; hover a figure for the same hint.</p>
+        <dl class="gallery-glossary">
+          <div><dt>Blocks</dt><dd>The building units of a story: text, maps, charts, media.</dd></div>
+          <div><dt>Block types</dt><dd>How many different kinds of block the story uses; a measure of variety.</dd></div>
+          <div><dt>Sections</dt><dd>Parts opened by a cover or a top-level heading; each is one stop in the section navigation.</dd></div>
+          <div><dt>Images</dt><dd>Blocks that carry a picture. Every meaningful image has alt text.</dd></div>
+          <div><dt>Data blocks</dt><dd>Interactive blocks beyond prose and media, such as maps, charts and tables.</dd></div>
+          <div><dt>Languages</dt><dd>The story plus any built translations, each served as its own page.</dd></div>
+        </dl>
+      </section>
+
+      <footer class="gallery-footer">
+        <span>Storyblocks &middot; {{ 'static export' if static_site else 'local preview' }}</span>
+        <a href="#top" data-top>Back to top</a>
+      </footer>
+      {% endif %}
+
+      <dialog class="gallery-settings" id="gallery-settings" aria-labelledby="settings-title">
+        <form method="dialog">
+          <header>
+            <h2 id="settings-title">Display settings</h2>
+            <button class="gallery-icon-btn" value="close" aria-label="Close settings">&times;</button>
+          </header>
+          <p class="settings-note">Saved in this browser only.</p>
+          <fieldset>
+            <legend>Colour scheme</legend>
+            <label><input type="radio" name="scheme" value="auto" /> System</label>
+            <label><input type="radio" name="scheme" value="light" /> Light</label>
+            <label><input type="radio" name="scheme" value="dark" /> Dark</label>
+          </fieldset>
+          <fieldset>
+            <legend>Default layout</legend>
+            <label><input type="radio" name="view" value="grid" /> Grid</label>
+            <label><input type="radio" name="view" value="list" /> List</label>
+          </fieldset>
+          <fieldset>
+            <legend>Card density</legend>
+            <label><input type="radio" name="density" value="comfortable" /> Comfortable</label>
+            <label><input type="radio" name="density" value="compact" /> Compact</label>
+          </fieldset>
+          <fieldset>
+            <legend>Show on cards</legend>
+            <label><input type="checkbox" name="thumbs" /> Thumbnails</label>
+            <label><input type="checkbox" name="features" /> Feature lists</label>
+            <label><input type="checkbox" name="stats" /> Statistics</label>
+          </fieldset>
+          <footer>
+            <button type="button" class="chip" data-reset-settings>Reset to defaults</button>
+            <button class="chip chip--primary" value="close">Done</button>
+          </footer>
+        </form>
+      </dialog>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('stories.static', filename='story/gallery.js') }}"></script>
+{% endblock %}

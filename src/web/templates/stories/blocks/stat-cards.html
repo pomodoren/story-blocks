@@ -1,0 +1,33 @@
+{#- Big-number cards. On desktop the stage pins and one card at a time counts up, then every card
+    opens into a grid; on a phone the cards are a swipeable row. Without JS it is simply the grid.
+    Card: value (the number, with any prefix / suffix), unit, title, text (Markdown), tag, image. -#}
+{% set cfg = block.config %}
+<section class="sb sb--stage sb--stat-cards" data-block="stat-cards">
+  <div class="sc-journey" style="--n: {{ cfg.cards | length }}">
+    <div class="sc-stage">
+    <div class="sc-head">
+      {% if cfg.icon and icons and cfg.icon in icons %}
+      <span class="sb__icon" aria-hidden="true">{{ icons[cfg.icon] | safe }}</span>
+      {% endif %}
+      {% if cfg.eyebrow %}<p class="sb__eyebrow">{{ cfg.eyebrow }}</p>{% endif %}
+      {% if cfg.title %}<h2 class="sb__title">{{ cfg.title }}</h2>{% endif %}
+      {% if cfg.intro %}<div class="sb__prose">{{ cfg.intro | markdown }}</div>{% endif %}
+    </div>
+      <div class="sc-cards">
+        {% for card in cfg.cards %}
+        <article class="sc-card" data-i="{{ loop.index0 }}" data-imm-step>
+          {% if card.image %}<img class="sc-img" src="{{ card.image }}" alt="{{ '' if card.decorative else (card.alt or '') }}" loading="lazy" />{% endif %}
+          <div class="sc-body">
+            {% if card.tag %}<p class="sc-tag">{{ card.tag }}</p>{% endif %}
+            <p class="sc-big"><b class="sc-value">{{ card.value }}</b>{% if card.unit %}<span class="sc-unit">{{ card.unit }}</span>{% endif %}</p>
+            {% if card.title %}<h3 class="sc-title">{{ card.title }}</h3>{% endif %}
+            {% if card.text %}<div class="sc-text">{{ card.text | markdown }}</div>{% endif %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      <div class="sc-dots" data-role="dots" hidden></div>
+    </div>
+  </div>
+  <script type="application/json" data-block-config>{{ cfg | tojson }}</script>
+</section>

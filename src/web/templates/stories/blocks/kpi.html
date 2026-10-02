@@ -1,0 +1,17 @@
+{#- A row of big figures. value counts up (static/story/blocks/kpi.js); item: value, unit, label,
+    text. -#}
+{% from "stories/blocks/_macros.html" import block_head %}
+{% set cfg = block.config %}
+<section class="sb sb--full-wide sb--kpi" data-block="kpi">
+  {{ block_head(cfg, icons, cfg.intro) }}
+  <div class="kp-row" style="--n: {{ cfg.figures | length }}">
+    {% for f in cfg.figures %}
+    <div class="kp-item">
+      <p class="kp-big"><b class="kp-value">{{ f.value }}</b>{% if f.unit %}<span class="kp-unit">{{ f.unit }}</span>{% endif %}</p>
+      {% if f.label or f.title %}<p class="kp-label">{{ f.label or f.title }}</p>{% endif %}
+      {% if f.text %}<div class="kp-text">{{ f.text | markdown }}</div>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  <script type="application/json" data-block-config>{{ cfg | tojson }}</script>
+</section>

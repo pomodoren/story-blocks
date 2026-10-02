@@ -1,0 +1,149 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Old town",
+    "buildings": 420,
+    "share_res": 71,
+    "setting": "urban"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       19.4,
+       40.4
+      ],
+      [
+       19.47,
+       40.4
+      ],
+      [
+       19.47,
+       40.449999999999996
+      ],
+      [
+       19.4,
+       40.449999999999996
+      ],
+      [
+       19.4,
+       40.4
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Riverside",
+    "buildings": 310,
+    "share_res": 58,
+    "setting": "urban"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       19.47,
+       40.4
+      ],
+      [
+       19.54,
+       40.4
+      ],
+      [
+       19.54,
+       40.449999999999996
+      ],
+      [
+       19.47,
+       40.449999999999996
+      ],
+      [
+       19.47,
+       40.4
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Harbour",
+    "buildings": 275,
+    "share_res": 44,
+    "setting": "coastal"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       19.4,
+       40.449999999999996
+      ],
+      [
+       19.47,
+       40.449999999999996
+      ],
+      [
+       19.47,
+       40.49999999999999
+      ],
+      [
+       19.4,
+       40.49999999999999
+      ],
+      [
+       19.4,
+       40.449999999999996
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Hillside",
+    "buildings": 190,
+    "share_res": 83,
+    "setting": "rural"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       19.47,
+       40.449999999999996
+      ],
+      [
+       19.54,
+       40.449999999999996
+      ],
+      [
+       19.54,
+       40.49999999999999
+      ],
+      [
+       19.47,
+       40.49999999999999
+      ],
+      [
+       19.47,
+       40.449999999999996
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,23 @@
+{#- A ranked list with inline bars. Server-rendered so it prints and reads without JS; ranking.js
+    only adds the metric chips. `rows`: [{name, value, note}], or `metrics`: [{label, unit, rows}]
+    (the first is drawn here). Keep the row markup in step with ranking.js. -#}
+{% from "stories/blocks/_macros.html" import block_shell %}
+{% set cfg = block.config %}
+{% set view = cfg.metrics[0] if cfg.metrics else cfg %}
+{% set unit = view.unit or cfg.unit %}
+{% set ordered = view.rows if cfg.sort == 'none' else (view.rows | sort(attribute='value', reverse=(cfg.sort != 'asc'))) %}
+{% set shown = ordered[:cfg.top] if cfg.top else ordered %}
+{% set top_value = (shown | map(attribute='value') | max) if shown else 0 %}
+{% call block_shell("ranking", cfg, icons, "split", prose=cfg.text) %}
+  <ol class="rk" data-role="rows" aria-label="{{ cfg.title }}">
+    {% for row in shown %}
+    <li class="rk__row">
+      <span class="rk__rank">{{ loop.index }}</span>
+      <span class="rk__name">{{ row.name }}{% if row.note %}<small>{{ row.note }}</small>{% endif %}</span>
+      <span class="rk__bar"><i style="--w: {{ (6 + 94 * row.value / top_value) | round(1) if top_value else 0 }}%"></i></span>
+      <span class="rk__val">{{ ('{:,.%df}' % cfg.decimals).format(row.value) if cfg.decimals is defined and cfg.decimals is not none else ('{:,.0f}' if row.value == row.value | int else '{:,.1f}').format(row.value) }}{% if unit %} <small>{{ unit }}</small>{% endif %}</span>
+    </li>
+    {% endfor %}
+  </ol>
+  {% if cfg.source %}<p class="sb__source">{{ cfg.source }}</p>{% endif %}
+{% endcall %}

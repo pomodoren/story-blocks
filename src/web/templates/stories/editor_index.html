@@ -1,0 +1,22 @@
+{% extends "stories/base.html" %}
+{% block body_attrs %} class="page"{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('stories.static', filename='story/gallery.css') }}" />{% endblock %}
+{% block page_header %}
+      <header><div>
+        <div class="eyebrow">Workspace</div>
+        <h1>Story builder</h1>
+        <p>Edit a story's blocks in the browser. <strong>Save draft</strong> previews it at
+           <code>?draft=1</code>; <strong>Publish</strong> rewrites its Markdown spine and rebuilds
+           the story. Local use only.</p>
+      </div></header>
+{% endblock %}
+{% block content %}
+      <div class="story-grid">
+        {% for r in rows %}
+        <a class="story-tile" href="{{ url_for('stories.story_editor.editor', story_id=r.id) }}">
+          <h2>{{ r.id }}</h2>
+          <div class="story-tile-meta">{% if r.draft %}<span class="tag">unpublished draft</span>{% else %}<span>published</span>{% endif %}</div>
+        </a>
+        {% endfor %}
+      </div>
+{% endblock %}

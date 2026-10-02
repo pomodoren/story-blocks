@@ -1,0 +1,6 @@
+{#- A call-to-action link. `href` is checked at build time. -#}
+{% set cfg = block.config %}
+<div class="sb sb--band sb--button" data-block="button">
+  <a class="sb__btn {% for s in cfg.style %}sb__btn--{{ s }} {% endfor %}" href="{{ cfg.href }}"{% if cfg.href.startswith('http') %} target="_blank" rel="noopener"{% endif %}>{{ cfg.text }}</a>
+  {% if cfg.note %}<p class="tb-caption">{{ cfg.note }}</p>{% endif %}
+</div>

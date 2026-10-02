@@ -1,0 +1,15 @@
+{#- A standalone heading in the story flow. `text` is plain (autoescaped); `level` 1 is a
+    main title, 2 a section header, 3+ a sub-header. -#}
+{% set level = block.config.level | default(2, true) %}
+<section class="sb sb--full sb--heading sb--heading-{{ level }}" data-block="heading">
+  <div class="sb__body">
+    {% if block.config.icon and icons and block.config.icon in icons %}
+    <span class="sb__icon" aria-hidden="true">{{ icons[block.config.icon] | safe }}</span>
+    {% endif %}
+    {% if block.config.eyebrow %}<p class="sb__eyebrow">{{ block.config.eyebrow }}</p>{% endif %}
+    {% if level == 1 %}<h1 class="sb__title sb__heading-text">{{ block.config.text }}</h1>
+    {% elif level == 2 %}<h2 class="sb__title sb__heading-text">{{ block.config.text }}</h2>
+    {% elif level == 3 %}<h3 class="sb__title sb__heading-text">{{ block.config.text }}</h3>
+    {% else %}<h4 class="sb__title sb__heading-text">{{ block.config.text }}</h4>{% endif %}
+  </div>
+</section>

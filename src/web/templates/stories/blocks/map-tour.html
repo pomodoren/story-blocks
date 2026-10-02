@@ -1,0 +1,29 @@
+{#- A numbered tour of places. Everything is server-rendered (so it prints and reads without JS):
+    the places are an ordered list; map-tour.js adds the map, numbered pins and prev / next.
+    Each place's focus.center is [lon, lat]. -#}
+{% from "stories/blocks/_macros.html" import map_media %}
+{% set cfg = block.config %}
+<section class="sb sb--split-wide sb--map-tour" data-block="map-tour">
+  <div class="sb__body">
+    {% if cfg.icon and icons and cfg.icon in icons %}<span class="sb__icon" aria-hidden="true">{{ icons[cfg.icon] | safe }}</span>{% endif %}
+    {% if cfg.eyebrow %}<p class="sb__eyebrow">{{ cfg.eyebrow }}</p>{% endif %}
+    {% if cfg.title %}<h2 class="sb__title">{{ cfg.title }}</h2>{% endif %}
+    {% if cfg.intro %}<div class="sb__prose">{{ cfg.intro | markdown }}</div>{% endif %}
+    <ol class="mt-places">
+      {% for p in cfg.places %}
+      <li class="mt-place"{% if p.focus and p.focus.center %} data-lon="{{ p.focus.center[0] }}" data-lat="{{ p.focus.center[1] }}"{% if p.focus.zoom %} data-zoom="{{ p.focus.zoom }}"{% endif %}{% endif %}>
+        {% if p.image %}<figure class="mt-fig"><img src="{{ p.image }}" alt="{{ '' if p.decorative else (p.alt or p.title) }}" loading="lazy" />{% if p.credit %}<figcaption>{{ p.credit }}</figcaption>{% endif %}</figure>{% endif %}
+        <h3 class="mt-title">{{ p.title }}</h3>
+        {% if p.text %}<div class="mt-text">{{ p.text | markdown }}</div>{% endif %}
+      </li>
+      {% endfor %}
+    </ol>
+    <div class="mt-nav" data-role="nav" hidden>
+      <button type="button" data-dir="-1" aria-label="Previous place">‹</button>
+      <span class="mt-count" aria-live="polite"></span>
+      <button type="button" data-dir="1" aria-label="Next place">›</button>
+    </div>
+  </div>
+  <div class="sb__media">{{ map_media(cfg) }}</div>
+  <script type="application/json" data-block-config>{{ cfg | tojson }}</script>
+</section>

@@ -1,0 +1,20 @@
+{% from "stories/blocks/_macros.html" import block_shell %}
+{% set cfg = block.config %}
+{% set names = {} %}
+{% for node in cfg.nodes %}{% set _ = names.update({node.id | string: node.label or node.id}) %}{% endfor %}
+{% call block_shell("network", cfg, icons, "split-wide", prose=cfg.text) %}
+  <div class="sb__network" data-role="network">
+    <div class="sb-net__bar" hidden>
+      {% if cfg.search %}<input type="search" class="sb-net__search" placeholder="Search" aria-label="Search the network" autocomplete="off">{% endif %}
+      <select class="sb-net__layout" aria-label="Layout">
+        {% for name in ("cose", "concentric", "breadthfirst", "circle", "grid") %}<option value="{{ name }}"{% if name == cfg.layout %} selected{% endif %}>{{ name | capitalize }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="sb-net__canvas" hidden></div>
+    <p class="sb-net__details" aria-live="polite" hidden></p>
+    <ul class="sb-net__list">
+      {% for edge in cfg.edges %}<li>{{ names[edge.source | string] }} &ndash; {{ names[edge.target | string] }}{% if edge.label %} ({{ edge.label }}){% endif %}</li>{% endfor %}
+    </ul>
+  </div>
+  {% if cfg.source %}<p class="sb__source">{{ cfg.source }}</p>{% endif %}
+{% endcall %}

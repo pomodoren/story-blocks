@@ -1,0 +1,5 @@
+{% from "stories/blocks/_macros.html" import block_shell, chart_media %}
+{% call block_shell("chart", block.config, icons, "split", prose=block.config.text) %}
+  {{ chart_media() }}
+  {% if block.config.source %}<p class="sb__source">{{ block.config.source }}</p>{% endif %}
+{% endcall %}

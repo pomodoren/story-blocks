@@ -1,0 +1,94 @@
+{% extends "stories/base.html" %}
+
+{% block title %}{{ meta.title }}{% endblock %}
+
+{# full-bleed reader: `data-nav="collapsed"` is a hook a host's own CSS can key off (e.g. to
+   fold a dashboard sidebar away) when it styles pages rendered by this blueprint. The
+   story's own section jumper is the fixed .story-nav bar built by story.js. #}
+{% block body_attrs %} data-nav="collapsed"{% endblock %}
+
+{% block head %}
+    {% if meta.subtitle %}<meta name="description" content="{{ meta.subtitle | striptags }}" />{% endif %}
+    <meta name="theme-color" content="#101013" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Oswald:wght@400;500;600;700&amp;family=Roboto+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+    {% if maptiler_key %}<meta name="maptiler-key" content="{{ maptiler_key }}" />{% endif %}
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@maplibre/maplibre-gl-compare@0.5.0/dist/maplibre-gl-compare.css" />
+    <link rel="stylesheet" href="{{ url_for('stories.static', filename='story/core.css') }}" />
+    <link id="storyTheme" rel="stylesheet"
+          href="{{ url_for('stories.static', filename='story/themes/' ~ theme ~ '.css') }}"
+          data-theme-base="{{ url_for('stories.static', filename='story/themes/') }}"
+          data-themes="{{ themes | join(',') }}" />
+    {% if meta.accent %}
+    <style>#story { --s-accent: {{ meta.accent }}; --s-accent-ink: {{ meta.accent }}; }</style>
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    <div id="story" data-story
+         data-id="{{ meta.id }}"
+         data-title="{{ meta.title }}"
+         data-iso3="{{ meta.iso3 or '' }}"
+         data-scenario="{{ meta.scenario or '' }}"
+         data-immerse="{{ meta.immerse or '' }}"
+         data-theme="{{ theme }}">
+
+      {% if meta.logo %}
+      {% set logo_img %}<img src="{{ meta.logo }}" alt="{{ meta.logo_alt or '' }}" />{% endset %}
+      <div class="story-logo">{% if meta.logo_link %}<a href="{{ meta.logo_link }}">{{ logo_img }}</a>{% else %}{{ logo_img }}{% endif %}</div>
+      {% endif %}
+
+      {% if languages %}
+      <nav class="story-langs" aria-label="Language">
+        {% for l in languages %}
+        <a href="{{ url_for('stories.reader', story_id=l.id) }}" hreflang="{{ l.lang }}" lang="{{ l.lang }}"{% if l.id == meta.id %} aria-current="true"{% endif %}>{{ l.name }}</a>
+        {% endfor %}
+      </nav>
+      {% endif %}
+
+      {% if is_draft %}
+      <div class="story-draft-ribbon" role="status">Draft preview</div>
+      {% endif %}
+
+
+      <div class="story-flow">
+        {% for block in blocks %}
+        {% include "stories/blocks/" ~ block.type ~ ".html" %}
+        {% endfor %}
+      </div>
+
+      {% if collection and collection.stories %}
+      <nav class="story-collection" aria-label="More in {{ collection.name }}">
+        <h2>More in {{ collection.name }}</h2>
+        <ul>{% for c in collection.stories %}<li><a href="{{ url_for('stories.reader', story_id=c.id) }}">{{ c.title }}</a></li>{% endfor %}</ul>
+      </nav>
+      {% endif %}
+
+      <div class="story-present-ui" hidden>
+        <div class="story-present-bar"><i></i></div>
+        <button type="button" data-present="prev" aria-label="Previous slide">‹</button>
+        <span class="story-present-progress" aria-live="polite"></span>
+        <button type="button" data-present="next" aria-label="Next slide">›</button>
+        <button type="button" data-present="overview" aria-label="Overview (O)">▦</button>
+        <button type="button" data-present="fullscreen" aria-label="Fullscreen (F)">⛶</button>
+        <button type="button" class="story-present-exit">Exit ✕</button>
+      </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@maplibre/maplibre-gl-compare@0.5.0/dist/maplibre-gl-compare.js"></script>
+    {% if 'deck-tour' in hydrate_types %}<script src="https://unpkg.com/deck.gl@9.1.12/dist.min.js"></script>{% endif %}
+    {% if 'network' in hydrate_types %}<script src="https://cdn.jsdelivr.net/npm/cytoscape@3.33.1/dist/cytoscape.min.js"></script>{% endif %}
+    <script src="https://unpkg.com/chart.js@4/dist/chart.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script>window.STORY_BLOCKS = {}; document.documentElement.lang = {{ (meta.lang or 'en') | tojson }};</script>
+    <script src="{{ url_for('stories.static', filename='story/lib.js') }}"></script>
+    {% for type in hydrate_types %}
+    <script src="{{ url_for('stories.static', filename='story/blocks/' ~ type ~ '.js') }}"></script>
+    {% endfor %}
+    <script src="{{ url_for('stories.static', filename='story/story.js') }}"></script>
+{% endblock %}

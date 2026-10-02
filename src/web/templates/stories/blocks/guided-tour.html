@@ -1,0 +1,39 @@
+{#- A pinned map + numbered step cards. `layout: overlay` (default) floats the cards over a wide
+    map; `layout: split` is the old 30/70 text-beside-map. Each step: title, text (Markdown),
+    stats [{value, label}] (a big-number row that counts up), focus (camera). The DOM order is
+    stage first, body second -- CSS decides which side each lands on. -#}
+{% from "stories/blocks/_macros.html" import map_source %}
+{% set cfg = block.config %}
+<section class="sb sb--tour sb--guided-tour gt--{{ cfg.layout }}" data-block="guided-tour">
+  <div class="sb__media gt-media">
+    <div class="sb__map" data-role="map"></div>
+    <div class="gt-hud" data-role="hud" hidden></div>
+    <div class="sb__legend" data-role="legend" hidden></div>
+    {{ map_source(cfg) }}
+  </div>
+  <div class="sb__body gt-steps">
+    <div class="gt-head">
+      {% if cfg.icon and icons and cfg.icon in icons %}
+      <span class="sb__icon" aria-hidden="true">{{ icons[cfg.icon] | safe }}</span>
+      {% endif %}
+      {% if cfg.eyebrow %}<p class="sb__eyebrow">{{ cfg.eyebrow }}</p>{% endif %}
+      {% if cfg.title %}<h2 class="sb__title">{{ cfg.title }}</h2>{% endif %}
+      {% if cfg.intro %}<div class="sb__prose gt-intro">{{ cfg.intro | markdown }}</div>{% endif %}
+    </div>
+    {% for step in cfg['steps'] %}
+    <div class="gt-step" data-step="{{ loop.index0 }}" data-imm-step{% if step.focus %} data-focus='{{ step.focus | tojson }}'{% endif %}>
+      <span class="gt-num" aria-hidden="true">{{ "%02d"|format(loop.index) }}</span>
+      {% if step.title %}<h3 class="gt-step-title">{{ step.title }}</h3>{% endif %}
+      {% if step.text %}<div class="gt-step-text">{{ step.text | markdown }}</div>{% endif %}
+      {% if step.stats %}
+      <div class="gt-stats">
+        {% for stat in step.stats %}
+        <div class="gt-stat"><b>{{ stat.value }}</b>{% if stat.label %}<span>{{ stat.label }}</span>{% endif %}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  <script type="application/json" data-block-config>{{ cfg | tojson }}</script>
+</section>

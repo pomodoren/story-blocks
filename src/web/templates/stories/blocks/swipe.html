@@ -1,0 +1,12 @@
+{% from "stories/blocks/_macros.html" import block_shell %}
+{% call block_shell("swipe", block.config, icons, "split-wide", prose=block.config.text) %}
+  {% if block.config.mode == "divider" %}
+  <div class="sb__swipe" data-role="swipe" hidden></div>
+  {% else %}
+  <div class="sb__compare" data-role="compare">
+    <div class="cmp-map cmp-before"></div>
+    <div class="cmp-map cmp-after"></div>
+  </div>
+  {% endif %}
+  <div class="sb__legend" data-role="legend" hidden></div>
+{% endcall %}

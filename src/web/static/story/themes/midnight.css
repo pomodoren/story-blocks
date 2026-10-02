@@ -1,0 +1,26 @@
+/* midnight -- deep navy dark with a cyan accent. */
+#story {
+  --s-bg: #0f1b2d;
+  --s-fg: #e3eaf4;
+  --s-muted: #8fa1ba;
+  --s-surface: #16253b;
+  --s-border: #27395a;
+  --s-accent: #38bdf8;
+  --s-accent-ink: #7dd3fc;
+  --s-code-bg: #1b2c47;
+
+  --s-font: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --s-serif: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --s-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --s-title-weight: 650;
+  --s-title-tracking: -.015em;
+
+  --s-h1: clamp(30px, 4.2vw, 46px);
+  --s-h2: clamp(20px, 2.4vw, 26px);
+  --s-body: 15px;
+
+  --s-radius: 12px;
+  --s-gap: clamp(48px, 7vh, 88px);
+  --s-measure: 42rem;
+  --s-shadow: 0 12px 40px rgba(2, 8, 20, .45);
+}

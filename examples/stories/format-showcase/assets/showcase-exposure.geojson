@@ -1,0 +1,165 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Port warehouse",
+    "kind": "port",
+    "value_m": 42,
+    "flood_m": 1.8
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     19.488,
+     40.446
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Fish farm",
+    "kind": "aquaculture",
+    "value_m": 9,
+    "flood_m": 2.4
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     19.43,
+     40.54
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Salt works",
+    "kind": "industry",
+    "value_m": 15,
+    "flood_m": 2.1
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     19.42,
+     40.52
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Beach hotel",
+    "kind": "tourism",
+    "value_m": 28,
+    "flood_m": 0.9
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     19.5,
+     40.43
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Village school",
+    "kind": "civic",
+    "value_m": 3,
+    "flood_m": 1.2
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     19.45,
+     40.56
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Cold store",
+    "kind": "port",
+    "value_m": 12,
+    "flood_m": 1.6
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     19.49,
+     40.45
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Campsite",
+    "kind": "tourism",
+    "value_m": 6,
+    "flood_m": 0.6
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     19.47,
+     40.6
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Pumping station",
+    "kind": "utility",
+    "value_m": 8,
+    "flood_m": 2.8
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     19.37,
+     40.64
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Farm cooperative",
+    "kind": "agriculture",
+    "value_m": 11,
+    "flood_m": 2.5
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     19.36,
+     40.62
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Clinic",
+    "kind": "civic",
+    "value_m": 5,
+    "flood_m": 0.4
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     19.455,
+     40.5
+    ]
+   }
+  }
+ ]
+}

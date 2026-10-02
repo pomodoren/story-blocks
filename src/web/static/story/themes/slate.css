@@ -1,0 +1,27 @@
+/* slate -- the dashboard's own look: cool greys, teal accent, sans throughout.
+   Tokens track the shared design system in css/common.css (Districts page). */
+#story {
+  --s-bg: #f4f6f9;
+  --s-fg: #172236;
+  --s-muted: #68758a;
+  --s-surface: #ffffff;
+  --s-border: #dce2ea;
+  --s-accent: #0b8a73;
+  --s-accent-ink: #087562;
+  --s-code-bg: #eef1f4;
+
+  --s-font: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --s-serif: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --s-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --s-title-weight: 700;
+  --s-title-tracking: -.02em;
+
+  --s-h1: clamp(28px, 3.6vw, 38px);
+  --s-h2: clamp(19px, 2.2vw, 23px);
+  --s-body: 15px;
+
+  --s-radius: 12px;
+  --s-gap: clamp(48px, 7vh, 84px);
+  --s-measure: 40rem;
+  --s-shadow: 0 8px 24px #26364c12;
+}

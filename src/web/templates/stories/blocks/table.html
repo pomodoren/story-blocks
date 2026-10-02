@@ -1,0 +1,32 @@
+{#- An authored table. Server-rendered so it prints and reads without JS; table.js adds search +
+    sort. `columns`: a label, or {label, num: true, align}. `rows`: lists of cells -- text, or {label, chip: ok|warn|bad} for a status chip. -#}
+{% from "stories/blocks/_macros.html" import block_head %}
+{% set cfg = block.config %}
+<section class="sb sb--full-wide sb--table" data-block="table">
+  {{ block_head(cfg, icons, cfg.intro) }}
+  <div class="tb-tools" data-role="tools" hidden></div>
+  <div class="tb-scroll">
+    <table class="tb{% if cfg.locate %} tb--locate{% endif %}">
+      <thead><tr>
+        {% for col in cfg.columns %}
+        {% set c = col if col is mapping else {'label': col} %}
+        <th scope="col"{% if c.num %} class="is-num" data-num="1"{% endif %}>{{ c.label }}</th>
+        {% endfor %}
+      </tr></thead>
+      <tbody>
+        {% for row in cfg.rows %}
+        <tr>{% for cell in row %}
+          {% set c = cfg.columns[loop.index0] if loop.index0 < cfg.columns | length else '' %}
+          <td{% if c is mapping and c.num %} class="is-num"{% endif %}>
+            {%- if cell is mapping -%}
+              {%- if cell.chip %}<span class="tb-chip tb-chip--{{ cell.chip }}">{{ cell.label }}</span>{% else %}{{ cell.label }}{% endif -%}
+            {%- else %}{{ cell }}{% endif -%}
+          </td>
+        {% endfor %}</tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if cfg.caption %}<p class="tb-caption">{{ cfg.caption }}</p>{% endif %}
+  <script type="application/json" data-block-config>{{ cfg | tojson }}</script>
+</section>

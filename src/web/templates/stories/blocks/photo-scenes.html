@@ -1,0 +1,80 @@
+{#- A pinned full-bleed photo; each scene is a card scrolling over it. Scene: title, text
+    (Markdown), image (URL), alt_image (a second photo behind a toggle), pos (tl/tr/ml/mc/mr/bl/br
+    -- where the card sits), tag (small label), accent (colour), stat/stat_unit (a number the
+    `grid` mode counts up in its focus card). A scene with no image gets a tinted gradient
+    instead. The <img> tags are autoescaped -- never CSS url().
+
+    `mode: grid` (default `float`) swaps the pinned-photo-with-floating-cards reading for a
+    pinned tile grid that scrubs one scene into a big focus card as you scroll, then reveals the
+    whole grid as a hoverable gallery -- see static/story/blocks/photo-scenes.js. -#}
+{% set cfg = block.config %}
+{% set grid = cfg.mode == 'grid' %}
+<section class="sb sb--stage sb--photo-scenes{% if grid %} sb--photo-scenes--grid{% endif %}" data-block="photo-scenes">
+  <div class="ps-head">
+    {% if cfg.icon and icons and cfg.icon in icons %}
+    <span class="sb__icon" aria-hidden="true">{{ icons[cfg.icon] | safe }}</span>
+    {% endif %}
+    {% if cfg.eyebrow %}<p class="sb__eyebrow">{{ cfg.eyebrow }}</p>{% endif %}
+    {% if cfg.title %}<h2 class="sb__title">{{ cfg.title }}</h2>{% endif %}
+    {% if cfg.intro %}<div class="sb__prose">{{ cfg.intro | markdown }}</div>{% endif %}
+  </div>
+  {% if grid %}
+  <div class="pg-journey">
+    <div class="pg-stage">
+      <div class="pg-grid" data-role="grid">
+        {% for scene in cfg.scenes %}
+        <figure class="pg-tile" data-i="{{ loop.index0 }}" data-imm-step
+                data-stat="{{ scene.stat or '' }}" data-stat-unit="{{ scene.stat_unit or '' }}"
+                {% if scene.accent %}style="--acc: {{ scene.accent }}"{% endif %}>
+          {% if scene.image %}<img src="{{ scene.image }}" alt="{{ '' if scene.decorative else (scene.alt or '') }}" loading="lazy" />{% endif %}
+          <div class="pg-tile-veil"></div>
+          <div class="pg-tile-b">
+            {% if scene.tag %}<div class="pg-tile-tag">{{ scene.tag }}</div>{% endif %}
+            {% if scene.title %}<div class="pg-tile-title">{{ scene.title }}</div>{% endif %}
+            {% if scene.text %}<div class="pg-tile-note">{{ scene.text | markdown }}</div>{% endif %}
+          </div>
+        </figure>
+        {% endfor %}
+      </div>
+      <div class="pg-focus" data-role="focus"></div>
+      <div class="pg-revcap">Hover any card</div>
+    </div>
+    <div class="pg-spacer" style="height: {{ (cfg.scenes | length) * 90 }}vh"></div>
+  </div>
+  {% else %}
+  <div class="ps-wrap">
+    <div class="ps-stage" aria-hidden="true">
+      {% for scene in cfg.scenes %}
+      {% set i = loop.index0 %}
+      <figure class="ps-bg" data-i="{{ i }}" data-a="0"{% if scene.accent %} style="--acc: {{ scene.accent }}"{% endif %}>
+        {% if scene.image %}<img src="{{ scene.image }}" alt="{{ '' if scene.decorative else (scene.alt or '') }}" loading="{{ 'eager' if i == 0 else 'lazy' }}" />{% endif %}
+      </figure>
+      {% if scene.alt_image %}
+      <figure class="ps-bg" data-i="{{ i }}" data-a="1"><img src="{{ scene.alt_image }}" alt="" loading="lazy" /></figure>
+      {% endif %}
+      {% endfor %}
+      <div class="ps-veil"></div>
+      <div class="ps-rail" data-role="rail"></div>
+      <div class="ps-hint">Scroll</div>
+    </div>
+    <div class="ps-scenes">
+      {% for scene in cfg.scenes %}
+      <section class="ps-scene ps-{{ scene.pos or ('bl' if loop.index0 % 2 == 0 else 'tr') }}" data-i="{{ loop.index0 }}" data-imm-step{% if scene.accent %} style="--acc: {{ scene.accent }}"{% endif %}>
+        {% if scene.image %}<img class="ps-mphoto" src="{{ scene.image }}" alt="{{ '' if scene.decorative else (scene.alt or scene.caption or scene.title or '') }}" loading="lazy" />{% endif %}
+        <article class="ps-card">
+          <div class="ps-meta">
+            <span class="ps-num" aria-hidden="true">{{ "%02d"|format(loop.index) }}</span>
+            {% if scene.tag %}<span class="ps-tag">{{ scene.tag }}</span>{% endif %}
+          </div>
+          {% if scene.title %}<h3 class="ps-title">{{ scene.title }}</h3>{% endif %}
+          {% if scene.text %}<div class="ps-text">{{ scene.text | markdown }}</div>{% endif %}
+          {% if scene.alt_image %}<button type="button" class="ps-alt" data-i="{{ loop.index0 }}" aria-pressed="false">Show the other photo</button>{% endif %}
+          {% if scene.caption %}<p class="ps-caption">{{ scene.caption }}</p>{% endif %}
+        </article>
+      </section>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+  <script type="application/json" data-block-config>{{ cfg | tojson }}</script>
+</section>
